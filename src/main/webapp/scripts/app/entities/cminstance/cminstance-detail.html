@@ -1,0 +1,62 @@
+
+<div>
+    <h2><span translate="cumuluslabrepoApp.cminstance.detail.title">Cminstance</span> {{cminstance.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th translate="entity.detail.field">Field</th>
+                    <th translate="entity.detail.value">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span translate="cumuluslabrepoApp.cminstance.modelid">Modelid</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{cminstance.modelid}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="cumuluslabrepoApp.cminstance.templateid">Templateid</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{cminstance.templateid}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="cumuluslabrepoApp.cminstance.ca">ca</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{cminstance.ca.name}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="cumuluslabrepoApp.cminstance.toc">toc</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{cminstance.toc.concretetoc}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="cumuluslabrepoApp.cminstance.property">property</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{cminstance.property.rules}}" readonly>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            ui-sref="cminstance"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

@@ -1,0 +1,21 @@
+{
+    "cumuluslabrepoApp": {
+        "ca" : {
+            "home": {
+                "title": "Cas",
+                "createLabel": "Créer un nouveau Ca",
+                "createOrEditLabel": "Créer ou éditer un Ca"
+            },
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Ca {{ id }} ?"
+            },
+            "detail": {
+                "title": "Ca"
+            },
+            "name": "Name",
+            "uri": "Uri",
+            "cminstance": "cminstance"
+        }
+    }
+}
+

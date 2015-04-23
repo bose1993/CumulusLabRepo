@@ -1,0 +1,136 @@
+<div>
+
+    <h2 translate="cumuluslabrepoApp.cminstance.home.title">Cminstance</h2>
+
+    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#saveCminstanceModal" ng-click="clear()">
+        <span class="glyphicon glyphicon-flash"></span> <span translate="cumuluslabrepoApp.cminstance.home.createLabel">Create a new Cminstance</span>
+    </button>
+    <div class="modal fade" id="saveCminstanceModal" tabindex="-1" role="dialog" aria-labelledby="myCminstanceLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="editForm" role="form" novalidate
+                      class="ng-scope ng-invalid ng-invalid-required ng-dirty ng-valid-minlength"
+                      ng-submit="create()">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                ng-click="clear()">&times;</button>
+                        <h4 class="modal-title" id="myCminstanceLabel" translate="cumuluslabrepoApp.cminstance.home.createOrEditLabel">Create or edit a Cminstance</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>ID</label>
+                            <input type="text" class="form-control" name="id"
+                                   ng-model="cminstance.id" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label translate="cumuluslabrepoApp.cminstance.modelid">Modelid</label>
+                            <input type="text" class="form-control" name="modelid"
+                                   ng-model="cminstance.modelid">
+                        </div>
+                        <div class="form-group">
+                            <label translate="cumuluslabrepoApp.cminstance.templateid">Templateid</label>
+                            <input type="text" class="form-control" name="templateid"
+                                   ng-model="cminstance.templateid">
+                        </div>
+
+                        <div class="form-group">
+                            <label translate="cumuluslabrepoApp.cminstance.ca">ca</label>
+                            <select class="form-control" name="ca" ng-model="cminstance.ca.id" ng-options="ca.id as ca.name for ca in cas">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label translate="cumuluslabrepoApp.cminstance.toc">toc</label>
+                            <select class="form-control" name="toc" ng-model="cminstance.toc.id" ng-options="toc.id as toc.concretetoc for toc in tocs">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label translate="cumuluslabrepoApp.cminstance.property">property</label>
+                            <select class="form-control" name="property" ng-model="cminstance.property.id" ng-options="property.id as property.rules for property in propertys">
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                        </button>
+                        <button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteCminstanceConfirmation">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="deleteForm" ng-submit="confirmDelete(cminstance.id)">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                ng-click="clear()">&times;</button>
+                        <h4 class="modal-title" translate="entity.delete.title">Confirm delete operation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p translate="cumuluslabrepoApp.cminstance.delete.question" translate-values="{id: '{{cminstance.id}}'}">Are you sure you want to delete this Cminstance?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                        </button>
+                        <button type="submit" ng-disabled="deleteForm.$invalid" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th translate="cumuluslabrepoApp.cminstance.modelid">Modelid</th>
+                    <th translate="cumuluslabrepoApp.cminstance.templateid">Templateid</th>
+                    <th translate="cumuluslabrepoApp.cminstance.ca">ca</th>
+                    <th translate="cumuluslabrepoApp.cminstance.toc">toc</th>
+                    <th translate="cumuluslabrepoApp.cminstance.property">property</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll="loadPage(page + 1)" infinite-scroll-disabled="links['last'] == page">
+                <tr ng-repeat="cminstance in cminstances">
+                    <td><a ui-sref="cminstanceDetail({id:cminstance.id})">{{cminstance.id}}</a></td>
+                    <td>{{cminstance.modelid}}</td>
+                    <td>{{cminstance.templateid}}</td>
+                    <td>{{cminstance.ca.name}}</td>
+                    <td>{{cminstance.toc.concretetoc}}</td>
+                    <td>{{cminstance.property.rules}}</td>
+                    <td>
+                        <button type="submit"
+                                ui-sref="cminstanceDetail({id:cminstance.id})"
+                                class="btn btn-info">
+                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.view"> View</span>
+                        </button>
+                        <button type="submit"
+                                ng-click="update(cminstance.id)"
+                                class="btn btn-primary">
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
+                        </button>
+                        <button type="submit"
+                                ng-click="delete(cminstance.id)"
+                                class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete"> Delete</span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

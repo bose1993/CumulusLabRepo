@@ -1,0 +1,52 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "cminstance",
+            "relationshipNameCapitalized": "Cminstance",
+            "relationshipFieldName": "cminstance",
+            "otherEntityName": "cminstance",
+            "relationshipType": "one-to-many",
+            "otherEntityNameCapitalized": "Cminstance"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "cloudlayer",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Cloudlayer",
+            "fieldNameUnderscored": "cloudlayer"
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "concretetoc",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Concretetoc",
+            "fieldNameUnderscored": "concretetoc"
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "tocdescription",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Tocdescription",
+            "fieldNameUnderscored": "tocdescription"
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "tocuri",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Tocuri",
+            "fieldNameUnderscored": "tocuri"
+        }
+    ],
+    "fieldsContainOwnerManyToMany": false,
+    "fieldsContainOneToMany": true,
+    "fieldsContainLocalDate": false,
+    "fieldsContainCustomTime": false,
+    "fieldsContainBigDecimal": false,
+    "fieldsContainDateTime": false,
+    "fieldsContainDate": false,
+    "changelogDate": "20150423151205",
+    "pagination": "infinite-scroll"
+}

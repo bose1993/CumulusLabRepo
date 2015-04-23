@@ -1,0 +1,21 @@
+{
+    "cumuluslabrepoApp": {
+        "propertyattribute" : {
+            "home": {
+                "title": "Propertyattributes",
+                "createLabel": "Créer un nouveau Propertyattribute",
+                "createOrEditLabel": "Créer ou éditer un Propertyattribute"
+            },
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Propertyattribute {{ id }} ?"
+            },
+            "detail": {
+                "title": "Propertyattribute"
+            },
+            "name": "Name",
+            "value": "Value",
+            "property": "property"
+        }
+    }
+}
+

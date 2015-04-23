@@ -1,0 +1,59 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "ca",
+            "relationshipNameCapitalized": "Ca",
+            "relationshipFieldName": "ca",
+            "otherEntityName": "ca",
+            "relationshipType": "many-to-one",
+            "otherEntityNameCapitalized": "Ca",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipId": 2,
+            "relationshipName": "toc",
+            "relationshipNameCapitalized": "Toc",
+            "relationshipFieldName": "toc",
+            "otherEntityName": "toc",
+            "relationshipType": "many-to-one",
+            "otherEntityNameCapitalized": "Toc",
+            "otherEntityField": "concretetoc"
+        },
+        {
+            "relationshipId": 3,
+            "relationshipName": "property",
+            "relationshipNameCapitalized": "Property",
+            "relationshipFieldName": "property",
+            "otherEntityName": "property",
+            "relationshipType": "many-to-one",
+            "otherEntityNameCapitalized": "Property",
+            "otherEntityField": "rules"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "modelid",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Modelid",
+            "fieldNameUnderscored": "modelid"
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "templateid",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Templateid",
+            "fieldNameUnderscored": "templateid"
+        }
+    ],
+    "fieldsContainOwnerManyToMany": false,
+    "fieldsContainOneToMany": false,
+    "fieldsContainLocalDate": false,
+    "fieldsContainCustomTime": false,
+    "fieldsContainBigDecimal": false,
+    "fieldsContainDateTime": false,
+    "fieldsContainDate": false,
+    "changelogDate": "20150423151844",
+    "pagination": "infinite-scroll"
+}

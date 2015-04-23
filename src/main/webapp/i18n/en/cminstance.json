@@ -1,0 +1,22 @@
+{
+    "cumuluslabrepoApp": {
+        "cminstance" : {
+            "home": {
+                "title": "Cminstances",
+                "createLabel": "Create a new Cminstance",
+                "createOrEditLabel": "Create or edit a Cminstance"
+            },
+            "delete": {
+                "question": "Are you sure you want to delete Cminstance {{ id }}?"
+            },
+            "detail": {
+                "title": "Cminstance"
+            },
+            "modelid": "Modelid",
+            "templateid": "Templateid",
+            "ca": "ca",
+            "toc": "toc",
+            "property": "property"
+        }
+    }
+}

@@ -1,0 +1,38 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "cminstance",
+            "relationshipNameCapitalized": "Cminstance",
+            "relationshipFieldName": "cminstance",
+            "otherEntityName": "cminstance",
+            "relationshipType": "one-to-many",
+            "otherEntityNameCapitalized": "Cminstance"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Name",
+            "fieldNameUnderscored": "name"
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "uri",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Uri",
+            "fieldNameUnderscored": "uri"
+        }
+    ],
+    "fieldsContainOwnerManyToMany": false,
+    "fieldsContainOneToMany": true,
+    "fieldsContainLocalDate": false,
+    "fieldsContainCustomTime": false,
+    "fieldsContainBigDecimal": false,
+    "fieldsContainDateTime": false,
+    "fieldsContainDate": false,
+    "changelogDate": "20150423150923",
+    "pagination": "infinite-scroll"
+}

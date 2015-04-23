@@ -1,0 +1,54 @@
+
+<div>
+    <h2><span translate="cumuluslabrepoApp.toc.detail.title">Toc</span> {{toc.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th translate="entity.detail.field">Field</th>
+                    <th translate="entity.detail.value">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span translate="cumuluslabrepoApp.toc.cloudlayer">Cloudlayer</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{toc.cloudlayer}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="cumuluslabrepoApp.toc.concretetoc">Concretetoc</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{toc.concretetoc}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="cumuluslabrepoApp.toc.tocdescription">Tocdescription</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{toc.tocdescription}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="cumuluslabrepoApp.toc.tocuri">Tocuri</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{toc.tocuri}}" readonly>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            ui-sref="toc"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

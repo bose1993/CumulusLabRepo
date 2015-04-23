@@ -1,0 +1,19 @@
+{
+  "generator-jhipster": {
+    "baseName": "CumulusLabRepo",
+    "packageName": "com.cumulus.repo.lab",
+    "packageFolder": "com/cumulus/repo/lab",
+    "authenticationType": "oauth2",
+    "hibernateCache": "hazelcast",
+    "clusteredHttpSession": "hazelcast",
+    "websocket": "spring-websocket",
+    "databaseType": "sql",
+    "devDatabaseType": "mysql",
+    "prodDatabaseType": "mysql",
+    "useCompass": true,
+    "buildTool": "maven",
+    "frontendBuilder": "grunt",
+    "javaVersion": "7",
+    "rememberMeKey": "36a1aacbbd68794f0be0b0e48363ff7e52ff62a8"
+  }
+}

@@ -1,0 +1,20 @@
+{
+    "cumuluslabrepoApp": {
+        "ca" : {
+            "home": {
+                "title": "Cas",
+                "createLabel": "Create a new Ca",
+                "createOrEditLabel": "Create or edit a Ca"
+            },
+            "delete": {
+                "question": "Are you sure you want to delete Ca {{ id }}?"
+            },
+            "detail": {
+                "title": "Ca"
+            },
+            "name": "Name",
+            "uri": "Uri",
+            "cminstance": "cminstance"
+        }
+    }
+}
