@@ -10,4 +10,6 @@ import java.util.List;
  */
 public interface TocRepository extends JpaRepository<Toc,Long> {
 
+	Toc findOneByTocid(String concreteToc);
+
 }

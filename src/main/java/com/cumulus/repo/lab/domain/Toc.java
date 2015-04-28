@@ -33,6 +33,9 @@ public class Toc implements Serializable {
     @Column(name = "tocuri")
     private String tocuri;
 
+    @Column(name = "toc_id")
+    private String tocid;
+
     @OneToMany(mappedBy = "toc")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -78,6 +81,14 @@ public class Toc implements Serializable {
         this.tocuri = tocuri;
     }
 
+    public String getTocId() {
+        return tocid;
+    }
+
+    public void setTocId(String tocid) {
+        this.tocid = tocid;
+    }
+
     public Set<Cminstance> getCminstances() {
         return cminstances;
     }
@@ -115,6 +126,7 @@ public class Toc implements Serializable {
                 ", concretetoc='" + concretetoc + "'" +
                 ", tocdescription='" + tocdescription + "'" +
                 ", tocuri='" + tocuri + "'" +
+                ", tocid='" + tocid + "'" +
                 '}';
     }
 }

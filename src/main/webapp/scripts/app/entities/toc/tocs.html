@@ -45,6 +45,11 @@
                             <input type="text" class="form-control" name="tocuri"
                                    ng-model="toc.tocuri">
                         </div>
+                        <div class="form-group">
+                            <label translate="cumuluslabrepoApp.toc.tocid">TocId</label>
+                            <input type="text" class="form-control" name="tocId"
+                                   ng-model="toc.tocId">
+                        </div>
 
 
                     </div>
@@ -95,6 +100,7 @@
                     <th translate="cumuluslabrepoApp.toc.concretetoc">Concretetoc</th>
                     <th translate="cumuluslabrepoApp.toc.tocdescription">Tocdescription</th>
                     <th translate="cumuluslabrepoApp.toc.tocuri">Tocuri</th>
+                    <th translate="cumuluslabrepoApp.toc.tocid">TocId</th>
                     <th></th>
                 </tr>
             </thead>
@@ -105,6 +111,7 @@
                     <td>{{toc.concretetoc}}</td>
                     <td>{{toc.tocdescription}}</td>
                     <td>{{toc.tocuri}}</td>
+                    <td>{{toc.tocId}}</td>
                     <td>
                         <button type="submit"
                                 ui-sref="tocDetail({id:toc.id})"

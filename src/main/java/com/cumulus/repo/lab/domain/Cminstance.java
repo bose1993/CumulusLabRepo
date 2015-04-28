@@ -27,6 +27,9 @@ public class Cminstance implements Serializable {
     @Column(name = "templateid")
     private String templateid;
 
+    @Column(name = "xml")
+    private String xml;
+
     @ManyToOne
     private Ca ca;
 
@@ -58,6 +61,14 @@ public class Cminstance implements Serializable {
 
     public void setTemplateid(String templateid) {
         this.templateid = templateid;
+    }
+
+    public String getXml() {
+        return xml;
+    }
+
+    public void setXml(String xml) {
+        this.xml = xml;
     }
 
     public Ca getCa() {
@@ -111,6 +122,7 @@ public class Cminstance implements Serializable {
                 "id=" + id +
                 ", modelid='" + modelid + "'" +
                 ", templateid='" + templateid + "'" +
+                ", xml='" + xml + "'" +
                 '}';
     }
 }

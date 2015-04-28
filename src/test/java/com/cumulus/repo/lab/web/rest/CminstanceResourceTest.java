@@ -41,6 +41,8 @@ public class CminstanceResourceTest {
     private static final String UPDATED_MODELID = "UPDATED_TEXT";
     private static final String DEFAULT_TEMPLATEID = "SAMPLE_TEXT";
     private static final String UPDATED_TEMPLATEID = "UPDATED_TEXT";
+    private static final String DEFAULT_XML = "SAMPLE_TEXT";
+    private static final String UPDATED_XML = "UPDATED_TEXT";
 
     @Inject
     private CminstanceRepository cminstanceRepository;
@@ -62,6 +64,7 @@ public class CminstanceResourceTest {
         cminstance = new Cminstance();
         cminstance.setModelid(DEFAULT_MODELID);
         cminstance.setTemplateid(DEFAULT_TEMPLATEID);
+        cminstance.setXml(DEFAULT_XML);
     }
 
     @Test
@@ -82,6 +85,7 @@ public class CminstanceResourceTest {
         Cminstance testCminstance = cminstances.iterator().next();
         assertThat(testCminstance.getModelid()).isEqualTo(DEFAULT_MODELID);
         assertThat(testCminstance.getTemplateid()).isEqualTo(DEFAULT_TEMPLATEID);
+        assertThat(testCminstance.getXml()).isEqualTo(DEFAULT_XML);
     }
 
     @Test
@@ -96,7 +100,8 @@ public class CminstanceResourceTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.[0].id").value(cminstance.getId().intValue()))
                 .andExpect(jsonPath("$.[0].modelid").value(DEFAULT_MODELID.toString()))
-                .andExpect(jsonPath("$.[0].templateid").value(DEFAULT_TEMPLATEID.toString()));
+                .andExpect(jsonPath("$.[0].templateid").value(DEFAULT_TEMPLATEID.toString()))
+                .andExpect(jsonPath("$.[0].xml").value(DEFAULT_XML.toString()));
     }
 
     @Test
@@ -111,7 +116,8 @@ public class CminstanceResourceTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(cminstance.getId().intValue()))
             .andExpect(jsonPath("$.modelid").value(DEFAULT_MODELID.toString()))
-            .andExpect(jsonPath("$.templateid").value(DEFAULT_TEMPLATEID.toString()));
+            .andExpect(jsonPath("$.templateid").value(DEFAULT_TEMPLATEID.toString()))
+            .andExpect(jsonPath("$.xml").value(DEFAULT_XML.toString()));
     }
 
     @Test
@@ -131,6 +137,7 @@ public class CminstanceResourceTest {
         // Update the cminstance
         cminstance.setModelid(UPDATED_MODELID);
         cminstance.setTemplateid(UPDATED_TEMPLATEID);
+        cminstance.setXml(UPDATED_XML);
         restCminstanceMockMvc.perform(put("/api/cminstances")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(cminstance)))
@@ -142,6 +149,7 @@ public class CminstanceResourceTest {
         Cminstance testCminstance = cminstances.iterator().next();
         assertThat(testCminstance.getModelid()).isEqualTo(UPDATED_MODELID);
         assertThat(testCminstance.getTemplateid()).isEqualTo(UPDATED_TEMPLATEID);
+        assertThat(testCminstance.getXml()).isEqualTo(UPDATED_XML);
     }
 
     @Test

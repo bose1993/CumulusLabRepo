@@ -45,6 +45,8 @@ public class TocResourceTest {
     private static final String UPDATED_TOCDESCRIPTION = "UPDATED_TEXT";
     private static final String DEFAULT_TOCURI = "SAMPLE_TEXT";
     private static final String UPDATED_TOCURI = "UPDATED_TEXT";
+    private static final String DEFAULT_TOC_ID = "SAMPLE_TEXT";
+    private static final String UPDATED_TOC_ID = "UPDATED_TEXT";
 
     @Inject
     private TocRepository tocRepository;
@@ -68,6 +70,7 @@ public class TocResourceTest {
         toc.setConcretetoc(DEFAULT_CONCRETETOC);
         toc.setTocdescription(DEFAULT_TOCDESCRIPTION);
         toc.setTocuri(DEFAULT_TOCURI);
+        toc.setTocId(DEFAULT_TOC_ID);
     }
 
     @Test
@@ -90,6 +93,7 @@ public class TocResourceTest {
         assertThat(testToc.getConcretetoc()).isEqualTo(DEFAULT_CONCRETETOC);
         assertThat(testToc.getTocdescription()).isEqualTo(DEFAULT_TOCDESCRIPTION);
         assertThat(testToc.getTocuri()).isEqualTo(DEFAULT_TOCURI);
+        assertThat(testToc.getTocId()).isEqualTo(DEFAULT_TOC_ID);
     }
 
     @Test
@@ -106,7 +110,8 @@ public class TocResourceTest {
                 .andExpect(jsonPath("$.[0].cloudlayer").value(DEFAULT_CLOUDLAYER.toString()))
                 .andExpect(jsonPath("$.[0].concretetoc").value(DEFAULT_CONCRETETOC.toString()))
                 .andExpect(jsonPath("$.[0].tocdescription").value(DEFAULT_TOCDESCRIPTION.toString()))
-                .andExpect(jsonPath("$.[0].tocuri").value(DEFAULT_TOCURI.toString()));
+                .andExpect(jsonPath("$.[0].tocuri").value(DEFAULT_TOCURI.toString()))
+                .andExpect(jsonPath("$.[0].tocid").value(DEFAULT_TOC_ID.toString()));
     }
 
     @Test
@@ -123,7 +128,8 @@ public class TocResourceTest {
             .andExpect(jsonPath("$.cloudlayer").value(DEFAULT_CLOUDLAYER.toString()))
             .andExpect(jsonPath("$.concretetoc").value(DEFAULT_CONCRETETOC.toString()))
             .andExpect(jsonPath("$.tocdescription").value(DEFAULT_TOCDESCRIPTION.toString()))
-            .andExpect(jsonPath("$.tocuri").value(DEFAULT_TOCURI.toString()));
+            .andExpect(jsonPath("$.tocuri").value(DEFAULT_TOCURI.toString()))
+            .andExpect(jsonPath("$.tocid").value(DEFAULT_TOC_ID.toString()));
     }
 
     @Test
@@ -145,6 +151,7 @@ public class TocResourceTest {
         toc.setConcretetoc(UPDATED_CONCRETETOC);
         toc.setTocdescription(UPDATED_TOCDESCRIPTION);
         toc.setTocuri(UPDATED_TOCURI);
+        toc.setTocId(UPDATED_TOC_ID);
         restTocMockMvc.perform(put("/api/tocs")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(toc)))
@@ -158,6 +165,7 @@ public class TocResourceTest {
         assertThat(testToc.getConcretetoc()).isEqualTo(UPDATED_CONCRETETOC);
         assertThat(testToc.getTocdescription()).isEqualTo(UPDATED_TOCDESCRIPTION);
         assertThat(testToc.getTocuri()).isEqualTo(UPDATED_TOCURI);
+        assertThat(testToc.getTocId()).isEqualTo(UPDATED_TOC_ID);
     }
 
     @Test

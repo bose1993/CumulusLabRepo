@@ -38,6 +38,12 @@
             "fieldType": "String",
             "fieldNameCapitalized": "Tocuri",
             "fieldNameUnderscored": "tocuri"
+        },{
+            "fieldId": 5,
+            "fieldName": "tocid",
+            "fieldType": "String",
+            "fieldNameCapitalized": "TocId",
+            "fieldNameUnderscored": "toc_id"
         }
     ],
     "fieldsContainOwnerManyToMany": false,

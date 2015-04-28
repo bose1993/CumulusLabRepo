@@ -57,6 +57,6 @@ angular.module('cumuluslabrepoApp')
         };
 
         $scope.clear = function () {
-            $scope.toc = {cloudlayer: null, concretetoc: null, tocdescription: null, tocuri: null, id: null};
+            $scope.toc = {cloudlayer: null, concretetoc: null, tocdescription: null, tocuri: null, tocid: null, id: null};
         };
     });

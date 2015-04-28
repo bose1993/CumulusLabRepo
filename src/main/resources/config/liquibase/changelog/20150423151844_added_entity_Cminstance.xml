@@ -17,6 +17,7 @@
             </column>
             <column name="modelid" type="varchar(255)"/>
             <column name="templateid" type="varchar(255)"/>
+            <column name="xml" type="varchar(255)"/>
             <column name="ca_id" type="bigint"/>
             <column name="toc_id" type="bigint"/>
             <column name="property_id" type="bigint"/>

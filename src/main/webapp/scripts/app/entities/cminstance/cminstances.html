@@ -35,6 +35,11 @@
                             <input type="text" class="form-control" name="templateid"
                                    ng-model="cminstance.templateid">
                         </div>
+                        <div class="form-group">
+                            <label translate="cumuluslabrepoApp.cminstance.xml">Xml</label>
+                            <input type="text" class="form-control" name="xml"
+                                   ng-model="cminstance.xml">
+                        </div>
 
                         <div class="form-group">
                             <label translate="cumuluslabrepoApp.cminstance.ca">ca</label>
@@ -98,6 +103,7 @@
                     <th>ID</th>
                     <th translate="cumuluslabrepoApp.cminstance.modelid">Modelid</th>
                     <th translate="cumuluslabrepoApp.cminstance.templateid">Templateid</th>
+                    <th translate="cumuluslabrepoApp.cminstance.xml">Xml</th>
                     <th translate="cumuluslabrepoApp.cminstance.ca">ca</th>
                     <th translate="cumuluslabrepoApp.cminstance.toc">toc</th>
                     <th translate="cumuluslabrepoApp.cminstance.property">property</th>
@@ -109,6 +115,7 @@
                     <td><a ui-sref="cminstanceDetail({id:cminstance.id})">{{cminstance.id}}</a></td>
                     <td>{{cminstance.modelid}}</td>
                     <td>{{cminstance.templateid}}</td>
+                    <td>{{cminstance.xml}}</td>
                     <td>{{cminstance.ca.name}}</td>
                     <td>{{cminstance.toc.concretetoc}}</td>
                     <td>{{cminstance.property.rules}}</td>

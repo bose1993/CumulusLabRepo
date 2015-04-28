@@ -19,6 +19,7 @@
             <column name="concretetoc" type="varchar(255)"/>
             <column name="tocdescription" type="varchar(255)"/>
             <column name="tocuri" type="varchar(255)"/>
+            <column name="toc_id" type="varchar(255)"/>
         </createTable>
         
     </changeSet>

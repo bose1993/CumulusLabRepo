@@ -45,7 +45,15 @@
             "fieldType": "String",
             "fieldNameCapitalized": "Templateid",
             "fieldNameUnderscored": "templateid"
+        },
+	 {
+            "fieldId": 3,
+            "fieldName": "xml",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Xml",
+            "fieldNameUnderscored": "xml"
         }
+
     ],
     "fieldsContainOwnerManyToMany": false,
     "fieldsContainOneToMany": false,
