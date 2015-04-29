@@ -39,6 +39,9 @@ public class Cminstance implements Serializable {
     @ManyToOne
     private Property property;
 
+    @ManyToOne
+    private User user;
+
     public Long getId() {
         return id;
     }
@@ -93,6 +96,14 @@ public class Cminstance implements Serializable {
 
     public void setProperty(Property property) {
         this.property = property;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

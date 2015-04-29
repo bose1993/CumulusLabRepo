@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cumuluslabrepoApp')
-    .controller('CminstanceDetailController', function ($scope, $stateParams, Cminstance, Ca, Toc, Property) {
+    .controller('CminstanceDetailController', function ($scope, $stateParams, Cminstance, Ca, Toc, Property, User) {
         $scope.cminstance = {};
         $scope.load = function (id) {
             Cminstance.get({id: id}, function(result) {

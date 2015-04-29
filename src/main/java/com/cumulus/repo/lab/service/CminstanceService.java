@@ -67,6 +67,9 @@ public class CminstanceService {
     
     @Inject
 	private PropertyattributeRepository propertyattributesRepository;
+    
+    @Inject
+	private UserService userService;
 
     private Cminstance parseXMLTemplate(String XML) throws JAXBException, PropertyNotFoundException, PropertyAttributeException{
 		JaxbUnmarshal jx = new JaxbUnmarshal(XML,
@@ -163,12 +166,14 @@ return true;
 
 		try {
 			cm = this.parseXMLTemplate(XML);
-			/*
 			User user = userService.getUserWithAuthorities();
-			if (template.getVersion() == null) {
-				template.setVersion(new BigDecimal(1.0));
+			/* CAPIRE COSA FARE CON VERSIONE E MASTER
+			 * if (cm.getVersion() == null) {
+				cm.setVersion(new BigDecimal(1.0));
 			}
-			template.setMaster(true);
+			//cm.setMaster(true);
+			 
+			 
 			Sort s = new Sort(Sort.Direction.DESC, "version");
 			if (this.templateRepository.findByXmlid(template.getXmlId(), s) != null) {
 				return ResponseEntity
@@ -177,11 +182,12 @@ return true;
 								"A new template cannot already have an ID")
 						.build();
 			}
+			*/
 			if (user == null) {
 				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 			} else {
-				template.setUser(user);
-			}*/
+				cm.setUser(user);
+			}
 		} catch (JAXBException e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		} catch (PropertyNotFoundException e) {

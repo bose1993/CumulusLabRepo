@@ -56,6 +56,11 @@
                             <select class="form-control" name="property" ng-model="cminstance.property.id" ng-options="property.id as property.rules for property in propertys">
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label translate="cumuluslabrepoApp.cminstance.user">user</label>
+                            <select class="form-control" name="user" ng-model="cminstance.user.id" ng-options="user.id as user.login for user in users">
+                            </select>
+                        </div>
 
                     </div>
                     <div class="modal-footer">
@@ -107,6 +112,7 @@
                     <th translate="cumuluslabrepoApp.cminstance.ca">ca</th>
                     <th translate="cumuluslabrepoApp.cminstance.toc">toc</th>
                     <th translate="cumuluslabrepoApp.cminstance.property">property</th>
+                    <th translate="cumuluslabrepoApp.cminstance.user">user</th>
                     <th></th>
                 </tr>
             </thead>
@@ -119,6 +125,7 @@
                     <td>{{cminstance.ca.name}}</td>
                     <td>{{cminstance.toc.concretetoc}}</td>
                     <td>{{cminstance.property.rules}}</td>
+                    <td>{{cminstance.user.login}}</td>
                     <td>
                         <button type="submit"
                                 ui-sref="cminstanceDetail({id:cminstance.id})"

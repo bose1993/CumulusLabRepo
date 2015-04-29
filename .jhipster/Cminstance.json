@@ -29,7 +29,18 @@
             "relationshipType": "many-to-one",
             "otherEntityNameCapitalized": "Property",
             "otherEntityField": "rules"
+        },
+        {
+            "relationshipId": 4,
+            "relationshipName": "user",
+            "relationshipNameCapitalized": "User",
+            "relationshipFieldName": "user",
+            "otherEntityName": "user",
+            "relationshipType": "many-to-one",
+            "otherEntityNameCapitalized": "User",
+            "otherEntityField": "login"
         }
+
     ],
     "fields": [
         {

@@ -10,4 +10,7 @@ import java.util.List;
  */
 public interface CminstanceRepository extends JpaRepository<Cminstance,Long> {
 
+    @Query("select cminstance from Cminstance cminstance where cminstance.user.login = ?#{principal.username}")
+    List<Cminstance> findAllForCurrentUser();
+
 }

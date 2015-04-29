@@ -21,6 +21,7 @@
             <column name="ca_id" type="bigint"/>
             <column name="toc_id" type="bigint"/>
             <column name="property_id" type="bigint"/>
+            <column name="user_id" type="bigint"/>
         </createTable>
         
         <addForeignKeyConstraint baseColumnNames="ca_id"
@@ -40,6 +41,12 @@
                                  constraintName="fk_cminstance_property_id"
                                  referencedColumnNames="id"
                                  referencedTableName="T_PROPERTY"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="T_CMINSTANCE"
+                                 constraintName="fk_cminstance_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_USER"/>
 
     </changeSet>
 </databaseChangeLog>

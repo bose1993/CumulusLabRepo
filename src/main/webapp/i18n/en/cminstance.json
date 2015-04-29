@@ -17,7 +17,8 @@
             "xml": "Xml",
             "ca": "ca",
             "toc": "toc",
-            "property": "property"
+            "property": "property",
+            "user": "user"
         }
     }
 }
