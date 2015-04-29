@@ -3,17 +3,23 @@ package com.cumulus.repo.lab.service;
 import com.codahale.metrics.annotation.Timed;
 
 import com.cumulus.repo.lab.domain.Property;
+import com.cumulus.repo.lab.domain.Propertyattribute;
 import com.cumulus.repo.lab.domain.User;
 import com.cumulus.repo.lab.domain.Cminstance;
 import com.cumulus.repo.lab.domain.Toc;
 import com.cumulus.repo.lab.repository.CminstanceRepository;
 import com.cumulus.repo.lab.repository.PropertyRepository;
+import com.cumulus.repo.lab.repository.PropertyattributeRepository;
 import com.cumulus.repo.lab.repository.TocRepository;
 import com.cumulus.repo.lab.web.rest.util.PaginationUtil;
 import com.cumulus.repo.lab.xml.utils.JaxbUnmarshal;
+import com.cumulus.repo.lab.xml.utils.PropertyAttributeException;
 import com.cumulus.repo.lab.xml.utils.PropertyNotFoundException;
 
 
+import org.cumulus.certificate.model.PropertyType.PropertyPerformance;
+import org.cumulus.certificate.model.PropertyType.PropertyPerformance.PropertyPerformanceRow;
+import org.cumulus.certificate.model.PropertyType.PropertyPerformance.PropertyPerformanceRow.PropertyPerformanceCell;
 import org.cumulus.certificate.model.test.TestCertificationModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,8 +42,10 @@ import javax.xml.bind.JAXBException;
 
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 
 /**
  * REST controller for managing Cminstance.
@@ -56,8 +64,11 @@ public class CminstanceService {
     
     @Inject
 	private PropertyRepository propertyRepository;
+    
+    @Inject
+	private PropertyattributeRepository propertyattributesRepository;
 
-    private Cminstance parseXMLTemplate(String XML) throws JAXBException, PropertyNotFoundException{
+    private Cminstance parseXMLTemplate(String XML) throws JAXBException, PropertyNotFoundException, PropertyAttributeException{
 		JaxbUnmarshal jx = new JaxbUnmarshal(XML,
 				"org.cumulus.certificate.model");
 		Cminstance c = new Cminstance();
@@ -106,13 +117,14 @@ public class CminstanceService {
 								.getSecurityPropertyDefinition() + " Not found");
 			}
 			c.setProperty(property);
-			/*
+			c.setTemplateid(t.getCertificationModelTemplateID());
+			
 			PropertyPerformance prop = t.getSecurityProperty().getSProperty()
 					.getPropertyPerformance();
 			if (!this.checkPropertyAttribute(prop, property.getId())) {
 				throw new PropertyAttributeException(
 						"Proprety Attribute not found");
-			}*/
+			}
 			return c;
 		
 		} else {
@@ -120,31 +132,27 @@ public class CminstanceService {
 		}
 
 }
-/*
+
 private boolean checkPropertyAttribute(PropertyPerformance pp, long id) {
 for (int i = 0; i < pp.getPropertyPerformanceRow().size(); i++) {
+	log.debug("ENTRO ROW");
 	PropertyPerformanceRow ppr = pp.getPropertyPerformanceRow().get(i);
 	for (int j = 0; j < ppr.getPropertyPerformanceCell().size(); j++) {
+		log.debug("ENTRO CEL");
 		PropertyPerformanceCell ppc = ppr.getPropertyPerformanceCell()
 				.get(j);
 		String name = ppc.getName();
-		PropertyAttribute pa = this.propertyAttributesRepository
-				.findOneByProperty_idAndName(id, name);
-		if (pa == null) {
+		List<Propertyattribute> pa = this.propertyattributesRepository.findByParamAtt(id, name);
+		if(pa.isEmpty()){
 			return false;
-		} else {
-			if (pa.getRequired()) {
-				if (ppc.getValue() == null) {
-					return false;
-				}
-			}
 		}
+		
 	}
 }
 return true;
 
 }
-*/
+
 
 	@RequestMapping(value = "/templates", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
@@ -181,12 +189,17 @@ return true;
 					.badRequest()
 					.header("Failure",
 							"Property not found").build();
+		} catch (PropertyAttributeException e) {
+			return ResponseEntity
+					.badRequest()
+					.header("Failure",
+							"Property Attribute not found").build();
 		}
 		if (cm.getId() != null) {
 			return ResponseEntity
 					.badRequest()
 					.header("Failure",
-							"A new template cannot already have an ID").build();
+							"NEW CM CAN'T HAVE ID").build();
 		}
 		//cmInstanceRepository.save(template);
 		return ResponseEntity.created(
