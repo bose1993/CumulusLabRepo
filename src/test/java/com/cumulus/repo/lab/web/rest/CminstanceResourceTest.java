@@ -44,6 +44,15 @@ public class CminstanceResourceTest {
     private static final String DEFAULT_XML = "SAMPLE_TEXT";
     private static final String UPDATED_XML = "UPDATED_TEXT";
 
+    private static final BigDecimal DEFAULT_VERSION = BigDecimal.ZERO;
+    private static final BigDecimal UPDATED_VERSION = BigDecimal.ONE;
+
+    private static final Boolean DEFAULT_MASTER = false;
+    private static final Boolean UPDATED_MASTER = true;
+
+    private static final BigDecimal DEFAULT_TEMPLATE_VERSION = BigDecimal.ZERO;
+    private static final BigDecimal UPDATED_TEMPLATE_VERSION = BigDecimal.ONE;
+
     @Inject
     private CminstanceRepository cminstanceRepository;
 
@@ -65,6 +74,9 @@ public class CminstanceResourceTest {
         cminstance.setModelid(DEFAULT_MODELID);
         cminstance.setTemplateid(DEFAULT_TEMPLATEID);
         cminstance.setXml(DEFAULT_XML);
+        cminstance.setVersion(DEFAULT_VERSION);
+        cminstance.setMaster(DEFAULT_MASTER);
+        cminstance.setTemplateersion(DEFAULT_TEMPLATE_VERSION);
     }
 
     @Test
@@ -86,6 +98,9 @@ public class CminstanceResourceTest {
         assertThat(testCminstance.getModelid()).isEqualTo(DEFAULT_MODELID);
         assertThat(testCminstance.getTemplateid()).isEqualTo(DEFAULT_TEMPLATEID);
         assertThat(testCminstance.getXml()).isEqualTo(DEFAULT_XML);
+        assertThat(testCminstance.getVersion()).isEqualTo(DEFAULT_VERSION);
+        assertThat(testCminstance.getMaster()).isEqualTo(DEFAULT_MASTER);
+        assertThat(testCminstance.getTemplateersion()).isEqualTo(DEFAULT_TEMPLATE_VERSION);
     }
 
     @Test
@@ -101,7 +116,10 @@ public class CminstanceResourceTest {
                 .andExpect(jsonPath("$.[0].id").value(cminstance.getId().intValue()))
                 .andExpect(jsonPath("$.[0].modelid").value(DEFAULT_MODELID.toString()))
                 .andExpect(jsonPath("$.[0].templateid").value(DEFAULT_TEMPLATEID.toString()))
-                .andExpect(jsonPath("$.[0].xml").value(DEFAULT_XML.toString()));
+                .andExpect(jsonPath("$.[0].xml").value(DEFAULT_XML.toString()))
+                .andExpect(jsonPath("$.[0].version").value(DEFAULT_VERSION.intValue()))
+                .andExpect(jsonPath("$.[0].master").value(DEFAULT_MASTER.booleanValue()))
+                .andExpect(jsonPath("$.[0].templateversion").value(DEFAULT_TEMPLATE_VERSION.intValue()));
     }
 
     @Test
@@ -117,7 +135,10 @@ public class CminstanceResourceTest {
             .andExpect(jsonPath("$.id").value(cminstance.getId().intValue()))
             .andExpect(jsonPath("$.modelid").value(DEFAULT_MODELID.toString()))
             .andExpect(jsonPath("$.templateid").value(DEFAULT_TEMPLATEID.toString()))
-            .andExpect(jsonPath("$.xml").value(DEFAULT_XML.toString()));
+            .andExpect(jsonPath("$.xml").value(DEFAULT_XML.toString()))
+            .andExpect(jsonPath("$.version").value(DEFAULT_VERSION.intValue()))
+            .andExpect(jsonPath("$.master").value(DEFAULT_MASTER.booleanValue()))
+            .andExpect(jsonPath("$.templateversion").value(DEFAULT_TEMPLATE_VERSION.intValue()));
     }
 
     @Test
@@ -138,6 +159,9 @@ public class CminstanceResourceTest {
         cminstance.setModelid(UPDATED_MODELID);
         cminstance.setTemplateid(UPDATED_TEMPLATEID);
         cminstance.setXml(UPDATED_XML);
+        cminstance.setVersion(UPDATED_VERSION);
+        cminstance.setMaster(UPDATED_MASTER);
+        cminstance.setTemplateersion(UPDATED_TEMPLATE_VERSION);
         restCminstanceMockMvc.perform(put("/api/cminstances")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(cminstance)))
@@ -150,6 +174,9 @@ public class CminstanceResourceTest {
         assertThat(testCminstance.getModelid()).isEqualTo(UPDATED_MODELID);
         assertThat(testCminstance.getTemplateid()).isEqualTo(UPDATED_TEMPLATEID);
         assertThat(testCminstance.getXml()).isEqualTo(UPDATED_XML);
+        assertThat(testCminstance.getVersion()).isEqualTo(UPDATED_VERSION);
+        assertThat(testCminstance.getMaster()).isEqualTo(UPDATED_MASTER);
+        assertThat(testCminstance.getTemplateersion()).isEqualTo(UPDATED_TEMPLATE_VERSION);
     }
 
     @Test

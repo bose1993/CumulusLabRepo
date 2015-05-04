@@ -2,7 +2,7 @@
 // Questo file è stato generato dall'architettura JavaTM per XML Binding (JAXB) Reference Implementation, v2.2.8-b130911.1802 
 // Vedere <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Qualsiasi modifica a questo file andrà persa durante la ricompilazione dello schema di origine. 
-// Generato il: 2015.04.28 alle 02:17:59 PM CEST 
+// Generato il: 2015.05.04 alle 06:00:58 PM CEST 
 //
 
 
@@ -398,6 +398,14 @@ public class ObjectFactory {
      */
     public ComponentsType.Component createComponentsTypeComponent() {
         return new ComponentsType.Component();
+    }
+
+    /**
+     * Create an instance of {@link CommonCertificationModelType.CertificationModelID }
+     * 
+     */
+    public CommonCertificationModelType.CertificationModelID createCommonCertificationModelTypeCertificationModelID() {
+        return new CommonCertificationModelType.CertificationModelID();
     }
 
     /**

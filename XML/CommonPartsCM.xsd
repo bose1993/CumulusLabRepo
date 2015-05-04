@@ -3,14 +3,22 @@
     xmlns:ec="http://slasoi.org/monitoring/citymonitor/xmlrule"
     xmlns="http://www.cumulus.org/certificate/model" xmlns:sla="http://www.slaatsoi.eu/slamodel"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-     xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.1"
+    xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.1"
     targetNamespace="http://www.cumulus.org/certificate/model">
     <xs:import schemaLocation="slasoi.xsd" namespace="http://www.slaatsoi.eu/slamodel"/>
 
 
     <xs:complexType name="CommonCertificationModelType">
         <xs:sequence>
-            <xs:element name="CertificationModelID" type="xs:string"/>
+            <xs:element name="CertificationModelID">
+                <xsd:complexType>
+                    <xsd:simpleContent>
+                        <xsd:extension base="xs:string">
+                            <xsd:attribute name="version" type="xs:decimal"/>
+                        </xsd:extension>
+                    </xsd:simpleContent>
+                </xsd:complexType>
+            </xs:element>
             <xs:element name="LifeCycle" type="StateTransitionModelType"/>
             <xs:element name="Signature" type="signatureType"/>
             <xs:element name="ToC" type="tocType"/>
@@ -369,16 +377,16 @@
             <xs:choice>
                 <xs:element name="Condition" type="ConditionType"/>
                 <xs:element name="LogicalExpression" type="LogicalExpressionType">
-                <xs:annotation>
+                    <xs:annotation>
 
-<xs:appinfo>
+                        <xs:appinfo>
 
-<jxb:property name="LogicalExpressionRoot" />
+<jxb:property name="LogicalExpressionRoot"/>
 
 </xs:appinfo>
 
-</xs:annotation>   
-</xs:element>
+                    </xs:annotation>
+                </xs:element>
             </xs:choice>
             <xs:sequence minOccurs="0" maxOccurs="unbounded">
                 <xs:element name="LogicalOperator">
@@ -460,16 +468,16 @@
         <xs:sequence>
             <xs:choice>
                 <xs:element name="ArithmeticOperand" type="ArithmeticOperandType">
-                <xs:annotation>
+                    <xs:annotation>
 
-<xs:appinfo>
+                        <xs:appinfo>
 
-<jxb:property name="ArithmeticOperandChoice" />
+<jxb:property name="ArithmeticOperandChoice"/>
 
 </xs:appinfo>
 
-</xs:annotation>   
-</xs:element>
+                    </xs:annotation>
+                </xs:element>
                 <xs:element name="ArithmeticExpression" type="ArithmeticExpressionType"/>
             </xs:choice>
             <xs:sequence minOccurs="0" maxOccurs="unbounded">

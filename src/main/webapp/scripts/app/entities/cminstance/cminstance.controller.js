@@ -60,6 +60,6 @@ angular.module('cumuluslabrepoApp')
         };
 
         $scope.clear = function () {
-            $scope.cminstance = {modelid: null, templateid: null, xml: null, id: null};
+            $scope.cminstance = {modelid: null, templateid: null, xml: null, version: null, master: null, templateversion: null, id: null};
         };
     });

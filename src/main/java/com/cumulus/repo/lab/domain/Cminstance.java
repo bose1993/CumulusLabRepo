@@ -6,6 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,6 +30,15 @@ public class Cminstance implements Serializable {
 
     @Column(name = "xml")
     private String xml;
+
+    @Column(name = "version", precision=10, scale=2)
+    private BigDecimal version;
+
+    @Column(name = "master")
+    private Boolean master;
+
+    @Column(name = "template_version", precision=10, scale=2)
+    private BigDecimal templateversion;
 
     @ManyToOne
     private Ca ca;
@@ -72,6 +82,30 @@ public class Cminstance implements Serializable {
 
     public void setXml(String xml) {
         this.xml = xml;
+    }
+
+    public BigDecimal getVersion() {
+        return version;
+    }
+
+    public void setVersion(BigDecimal version) {
+        this.version = version;
+    }
+
+    public Boolean getMaster() {
+        return master;
+    }
+
+    public void setMaster(Boolean master) {
+        this.master = master;
+    }
+
+    public BigDecimal getTemplateersion() {
+        return templateversion;
+    }
+
+    public void setTemplateersion(BigDecimal templateversion) {
+        this.templateversion = templateversion;
     }
 
     public Ca getCa() {
@@ -134,6 +168,9 @@ public class Cminstance implements Serializable {
                 ", modelid='" + modelid + "'" +
                 ", templateid='" + templateid + "'" +
                 ", xml='" + xml + "'" +
+                ", version='" + version + "'" +
+                ", master='" + master + "'" +
+                ", templateversion='" + templateversion + "'" +
                 '}';
     }
 }

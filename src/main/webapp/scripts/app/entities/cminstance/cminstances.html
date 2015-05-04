@@ -40,6 +40,21 @@
                             <input type="text" class="form-control" name="xml"
                                    ng-model="cminstance.xml">
                         </div>
+                        <div class="form-group">
+                            <label translate="cumuluslabrepoApp.cminstance.version">Version</label>
+                            <input type="text" class="form-control" name="version"
+                                   ng-model="cminstance.version">
+                        </div>
+                        <div class="form-group">
+                            <label translate="cumuluslabrepoApp.cminstance.master">Master</label>
+                            <input type="checkbox" class="form-control" name="master"
+                                   ng-model="cminstance.master">
+                        </div>
+                        <div class="form-group">
+                            <label translate="cumuluslabrepoApp.cminstance.templateversion">Templateersion</label>
+                            <input type="text" class="form-control" name="templateversion"
+                                   ng-model="cminstance.templateversion">
+                        </div>
 
                         <div class="form-group">
                             <label translate="cumuluslabrepoApp.cminstance.ca">ca</label>
@@ -109,6 +124,9 @@
                     <th translate="cumuluslabrepoApp.cminstance.modelid">Modelid</th>
                     <th translate="cumuluslabrepoApp.cminstance.templateid">Templateid</th>
                     <th translate="cumuluslabrepoApp.cminstance.xml">Xml</th>
+                    <th translate="cumuluslabrepoApp.cminstance.version">Version</th>
+                    <th translate="cumuluslabrepoApp.cminstance.master">Master</th>
+                    <th translate="cumuluslabrepoApp.cminstance.templateversion">Templateersion</th>
                     <th translate="cumuluslabrepoApp.cminstance.ca">ca</th>
                     <th translate="cumuluslabrepoApp.cminstance.toc">toc</th>
                     <th translate="cumuluslabrepoApp.cminstance.property">property</th>
@@ -122,6 +140,9 @@
                     <td>{{cminstance.modelid}}</td>
                     <td>{{cminstance.templateid}}</td>
                     <td>{{cminstance.xml}}</td>
+                    <td>{{cminstance.version}}</td>
+                    <td>{{cminstance.master}}</td>
+                    <td>{{cminstance.templateversion}}</td>
                     <td>{{cminstance.ca.name}}</td>
                     <td>{{cminstance.toc.concretetoc}}</td>
                     <td>{{cminstance.property.rules}}</td>

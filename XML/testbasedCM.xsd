@@ -13,8 +13,16 @@
 
                 <xs:sequence>
 
-                    <xsd:element name="CertificationModelTemplateID" type="xs:string" maxOccurs="1"
-                        minOccurs="1"/>
+                    <xsd:element name="CertificationModelTemplateID" maxOccurs="1" minOccurs="1">
+                        <xsd:complexType>
+                            <xsd:simpleContent>
+                                <xsd:extension base="xs:string">
+                                    <xsd:attribute name="CA" type="xs:string" use="required"/>
+                                    <xsd:attribute name="version" type="xs:decimal"/>
+                                </xsd:extension>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
+                    </xsd:element>
                     <xs:element name="Collectors" type="CollectorType" maxOccurs="1" minOccurs="1"> </xs:element>
                     <xsd:element minOccurs="0" name="Context"/>
                 </xs:sequence>
@@ -41,8 +49,7 @@
         <xs:sequence>
             <xs:element name="AbstractCollector" type="AbstracCollectorType" maxOccurs="unbounded"
                 minOccurs="1"/>
-            <xs:element name="Collector" type="GeneralCollectorType" maxOccurs="unbounded">
-            </xs:element>
+            <xs:element name="Collector" type="GeneralCollectorType" maxOccurs="unbounded"> </xs:element>
             <xs:element name="EventBusCollector" type="eventBusCollectorType" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
@@ -141,8 +148,8 @@
                     <xs:attribute name="id" type="xs:string" use="required"/>
                 </xs:complexType>
             </xs:element>
-            <xs:element maxOccurs="1" minOccurs="1" type="xs:string" name="driver"></xs:element>
-            
+            <xs:element maxOccurs="1" minOccurs="1" type="xs:string" name="driver"/>
+
         </xs:sequence>
         <xs:attribute name="ExpirationTime" type="xs:gYearMonth"/>
         <xs:attribute name="Descriptor" type="xs:string"/>
@@ -187,11 +194,11 @@
             <!-- <xs:element name="KeyInfo" minOccurs="0"/> -->
         </xs:sequence>
     </xs:complexType>
-    	<xs:complexType name="eventBusCollectorType">
-		<xs:sequence maxOccurs="unbounded">
-			<xs:element name="EventId" type="xs:ID"/>
-			<xs:element name="EventCode" type="xs:string"/>
-		</xs:sequence>
-	</xs:complexType>
+    <xs:complexType name="eventBusCollectorType">
+        <xs:sequence maxOccurs="unbounded">
+            <xs:element name="EventId" type="xs:ID"/>
+            <xs:element name="EventCode" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
     <xsd:element name="testBasedCertifcationModel" type="TestCertificationModel"/>
 </xsd:schema>

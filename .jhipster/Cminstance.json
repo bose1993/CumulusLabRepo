@@ -63,7 +63,31 @@
             "fieldType": "String",
             "fieldNameCapitalized": "Xml",
             "fieldNameUnderscored": "xml"
+        },
+         {
+            "fieldId": 4,
+            "fieldName": "version",
+            "fieldType": "BigDecimal",
+            "fieldNameCapitalized": "Version",
+            "fieldNameUnderscored": "version"
+        },
+        {
+            "fieldId": 5,
+            "fieldName": "master",
+            "fieldType": "Boolean",
+            "fieldNameCapitalized": "Master",
+            "fieldNameUnderscored": "master"
+        },
+	{
+            "fieldId": 6,
+            "fieldName": "templateversion",
+            "fieldType": "BigDecimal",
+            "fieldNameCapitalized": "Templateersion",
+            "fieldNameUnderscored": "template_version"
         }
+
+
+
 
     ],
     "fieldsContainOwnerManyToMany": false,

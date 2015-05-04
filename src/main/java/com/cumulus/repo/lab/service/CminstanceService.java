@@ -4,9 +4,9 @@ import com.codahale.metrics.annotation.Timed;
 
 import com.cumulus.repo.lab.domain.Property;
 import com.cumulus.repo.lab.domain.Propertyattribute;
-import com.cumulus.repo.lab.domain.User;
 import com.cumulus.repo.lab.domain.Cminstance;
 import com.cumulus.repo.lab.domain.Toc;
+import com.cumulus.repo.lab.domain.User;
 import com.cumulus.repo.lab.repository.CminstanceRepository;
 import com.cumulus.repo.lab.repository.PropertyRepository;
 import com.cumulus.repo.lab.repository.PropertyattributeRepository;
@@ -171,18 +171,20 @@ return true;
 			 * if (cm.getVersion() == null) {
 				cm.setVersion(new BigDecimal(1.0));
 			}
-			//cm.setMaster(true);
+			*/
+			cm.setMaster(true);
 			 
 			 
 			Sort s = new Sort(Sort.Direction.DESC, "version");
-			if (this.templateRepository.findByXmlid(template.getXmlId(), s) != null) {
+			List<Cminstance> l = this.cminstanceRepository.findByModelid(cm.getModelid(), s);
+			if (!l.isEmpty()) {
 				return ResponseEntity
 						.badRequest()
 						.header("Failure",
 								"A new template cannot already have an ID")
 						.build();
 			}
-			*/
+			
 			if (user == null) {
 				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 			} else {
@@ -207,7 +209,8 @@ return true;
 					.header("Failure",
 							"NEW CM CAN'T HAVE ID").build();
 		}
-		//cmInstanceRepository.save(template);
+		this.cminstanceRepository.resetAllMaster(cm.getModelid());
+		cminstanceRepository.save(cm);
 		return ResponseEntity.created(
 				new URI("/service/templates/" + cm.getId())).build();
 	
