@@ -2,11 +2,13 @@ package com.cumulus.repo.lab.service;
 
 import com.codahale.metrics.annotation.Timed;
 
+import com.cumulus.repo.lab.domain.Ca;
 import com.cumulus.repo.lab.domain.Property;
 import com.cumulus.repo.lab.domain.Propertyattribute;
 import com.cumulus.repo.lab.domain.Cminstance;
 import com.cumulus.repo.lab.domain.Toc;
 import com.cumulus.repo.lab.domain.User;
+import com.cumulus.repo.lab.repository.CaRepository;
 import com.cumulus.repo.lab.repository.CminstanceRepository;
 import com.cumulus.repo.lab.repository.PropertyRepository;
 import com.cumulus.repo.lab.repository.PropertyattributeRepository;
@@ -15,6 +17,7 @@ import com.cumulus.repo.lab.web.rest.util.PaginationUtil;
 import com.cumulus.repo.lab.xml.utils.JaxbUnmarshal;
 import com.cumulus.repo.lab.xml.utils.PropertyAttributeException;
 import com.cumulus.repo.lab.xml.utils.PropertyNotFoundException;
+import com.cumulus.repo.lab.xml.utils.caNotFoundException;
 
 
 import org.cumulus.certificate.model.PropertyType.PropertyPerformance;
@@ -29,6 +32,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -70,8 +74,11 @@ public class CminstanceService {
     
     @Inject
 	private UserService userService;
+    
+    @Inject
+   	private CaRepository caRepository;
 
-    private Cminstance parseXMLTemplate(String XML) throws JAXBException, PropertyNotFoundException, PropertyAttributeException{
+    private Cminstance parseXMLTemplate(String XML) throws JAXBException, PropertyNotFoundException, PropertyAttributeException, caNotFoundException{
 		JaxbUnmarshal jx = new JaxbUnmarshal(XML,
 				"org.cumulus.certificate.model");
 		Cminstance c = new Cminstance();
@@ -82,14 +89,19 @@ public class CminstanceService {
 			JAXBElement<TestCertificationModel> obj = (JAXBElement<TestCertificationModel>) result;
 			TestCertificationModel t = obj.getValue();
 			c.setXml(XML);
-			c.setModelid(t.getCertificationModelID());
+			c.setModelid(t.getCertificationModelID().getValue());
 			/**
 			 * CAPIRE CHE FARE CON LA VERSIONE
-			if (t.getCertificationModelTemplateID().getVersion() != null) {
-				template.setVersion(t.getCertificationModelTemplateID()
+			 */
+			if (t.getCertificationModelID().getVersion() != null) {
+				c.setVersion(t.getCertificationModelID()
 						.getVersion());
 			}
-			*/
+			c.setTemplateid(t.getCertificationModelTemplateID().getValue());
+			BigDecimal tv= t.getCertificationModelTemplateID().getVersion();
+			c.setTemplateersion(tv.setScale(3));
+			c.setCa(this.findCa(t.getCertificationModelTemplateID().getCA()));
+			
 			log.debug(t.getToC().getId());
 			Toc toc = this.tocRepository.findOneByTocid(t.getToC().getId());
 			log.debug("TOC {}",toc);
@@ -120,7 +132,7 @@ public class CminstanceService {
 								.getSecurityPropertyDefinition() + " Not found");
 			}
 			c.setProperty(property);
-			c.setTemplateid(t.getCertificationModelTemplateID());
+			c.setTemplateid(t.getCertificationModelTemplateID().getValue());
 			
 			PropertyPerformance prop = t.getSecurityProperty().getSProperty()
 					.getPropertyPerformance();
@@ -156,8 +168,18 @@ return true;
 
 }
 
+private Ca findCa(String name) throws caNotFoundException{
+	Ca c = this.caRepository.findOneByName(name);
+	if(c!=null){
+		return c;
+	}else {
+		throw new caNotFoundException();
+	}
+}
 
-	@RequestMapping(value = "/templates", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+
+	@RequestMapping(value = "/cminstances", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
 	@Timed
 	public ResponseEntity<Void> create(@RequestBody String XML)
 			throws URISyntaxException {
@@ -167,14 +189,11 @@ return true;
 		try {
 			cm = this.parseXMLTemplate(XML);
 			User user = userService.getUserWithAuthorities();
-			/* CAPIRE COSA FARE CON VERSIONE E MASTER
-			 * if (cm.getVersion() == null) {
-				cm.setVersion(new BigDecimal(1.0));
+			
+			if (cm.getVersion() == null) {
+				cm.setVersion(new BigDecimal(1.0).setScale(3));
 			}
-			*/
 			cm.setMaster(true);
-			 
-			 
 			Sort s = new Sort(Sort.Direction.DESC, "version");
 			List<Cminstance> l = this.cminstanceRepository.findByModelid(cm.getModelid(), s);
 			if (!l.isEmpty()) {
@@ -202,6 +221,11 @@ return true;
 					.badRequest()
 					.header("Failure",
 							"Property Attribute not found").build();
+		} catch (caNotFoundException e) {
+			return ResponseEntity
+					.badRequest()
+					.header("Failure",
+							"Template Ca not found").build();
 		}
 		if (cm.getId() != null) {
 			return ResponseEntity
@@ -224,6 +248,7 @@ return true;
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Transactional
     public ResponseEntity<Void> update(@RequestBody Cminstance cminstance) throws URISyntaxException {
         log.debug("REST request to update Cminstance : {}", cminstance);
         if (cminstance.getId() == null) {

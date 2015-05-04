@@ -2,7 +2,7 @@
 // Questo file è stato generato dall'architettura JavaTM per XML Binding (JAXB) Reference Implementation, v2.2.8-b130911.1802 
 // Vedere <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Qualsiasi modifica a questo file andrà persa durante la ricompilazione dello schema di origine. 
-// Generato il: 2015.04.28 alle 02:17:59 PM CEST 
+// Generato il: 2015.05.04 alle 06:00:58 PM CEST 
 //
 
 
@@ -61,9 +61,9 @@ import javax.xml.bind.annotation.XmlType;
 public class CapabilityType {
 
     @XmlElementRefs({
-        @XmlElementRef(name = "AttackerCapabilities", type = JAXBElement.class),
         @XmlElementRef(name = "Attacker", type = JAXBElement.class),
-        @XmlElementRef(name = "AttackName", type = JAXBElement.class)
+        @XmlElementRef(name = "AttackName", type = JAXBElement.class),
+        @XmlElementRef(name = "AttackerCapabilities", type = JAXBElement.class)
     })
     protected List<JAXBElement<?>> attackerAndAttackNameAndAttackerCapabilities;
 
@@ -85,8 +85,8 @@ public class CapabilityType {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link JAXBElement }{@code <}{@link CapabilityType.AttackerCapabilities }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
+     * {@link JAXBElement }{@code <}{@link CapabilityType.AttackerCapabilities }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
      * 
      * 

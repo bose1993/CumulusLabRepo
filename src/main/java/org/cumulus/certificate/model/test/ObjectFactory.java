@@ -2,7 +2,7 @@
 // Questo file è stato generato dall'architettura JavaTM per XML Binding (JAXB) Reference Implementation, v2.2.8-b130911.1802 
 // Vedere <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Qualsiasi modifica a questo file andrà persa durante la ricompilazione dello schema di origine. 
-// Generato il: 2015.04.28 alle 02:17:59 PM CEST 
+// Generato il: 2015.05.04 alle 06:00:58 PM CEST 
 //
 
 
@@ -35,11 +35,11 @@ import javax.xml.namespace.QName;
 public class ObjectFactory {
 
     private final static QName _TestBasedCertifcationModel_QNAME = new QName("http://www.cumulus.org/certificate/model/test", "testBasedCertifcationModel");
-    private final static QName _EventBusCollectorTypeEventId_QNAME = new QName("", "EventId");
-    private final static QName _EventBusCollectorTypeEventCode_QNAME = new QName("", "EventCode");
     private final static QName _CapabilityTypeAttackerCapabilities_QNAME = new QName("", "AttackerCapabilities");
     private final static QName _CapabilityTypeAttacker_QNAME = new QName("", "Attacker");
     private final static QName _CapabilityTypeAttackName_QNAME = new QName("", "AttackName");
+    private final static QName _EventBusCollectorTypeEventId_QNAME = new QName("", "EventId");
+    private final static QName _EventBusCollectorTypeEventCode_QNAME = new QName("", "EventCode");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: org.cumulus.certificate.model.test
@@ -217,32 +217,20 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link TestCertificationModel.CertificationModelTemplateID }
+     * 
+     */
+    public TestCertificationModel.CertificationModelTemplateID createTestCertificationModelCertificationModelTemplateID() {
+        return new TestCertificationModel.CertificationModelTemplateID();
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link TestCertificationModel }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://www.cumulus.org/certificate/model/test", name = "testBasedCertifcationModel")
     public JAXBElement<TestCertificationModel> createTestBasedCertifcationModel(TestCertificationModel value) {
         return new JAXBElement<TestCertificationModel>(_TestBasedCertifcationModel_QNAME, TestCertificationModel.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "EventId", scope = EventBusCollectorType.class)
-    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-    @XmlID
-    public JAXBElement<String> createEventBusCollectorTypeEventId(String value) {
-        return new JAXBElement<String>(_EventBusCollectorTypeEventId_QNAME, String.class, EventBusCollectorType.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "EventCode", scope = EventBusCollectorType.class)
-    public JAXBElement<String> createEventBusCollectorTypeEventCode(String value) {
-        return new JAXBElement<String>(_EventBusCollectorTypeEventCode_QNAME, String.class, EventBusCollectorType.class, value);
     }
 
     /**
@@ -270,6 +258,26 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "", name = "AttackName", scope = CapabilityType.class)
     public JAXBElement<String> createCapabilityTypeAttackName(String value) {
         return new JAXBElement<String>(_CapabilityTypeAttackName_QNAME, String.class, CapabilityType.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "EventId", scope = EventBusCollectorType.class)
+    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+    @XmlID
+    public JAXBElement<String> createEventBusCollectorTypeEventId(String value) {
+        return new JAXBElement<String>(_EventBusCollectorTypeEventId_QNAME, String.class, EventBusCollectorType.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "EventCode", scope = EventBusCollectorType.class)
+    public JAXBElement<String> createEventBusCollectorTypeEventCode(String value) {
+        return new JAXBElement<String>(_EventBusCollectorTypeEventCode_QNAME, String.class, EventBusCollectorType.class, value);
     }
 
 }
