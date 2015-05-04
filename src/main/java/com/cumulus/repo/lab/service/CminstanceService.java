@@ -18,6 +18,7 @@ import com.cumulus.repo.lab.xml.utils.JaxbUnmarshal;
 import com.cumulus.repo.lab.xml.utils.PropertyAttributeException;
 import com.cumulus.repo.lab.xml.utils.PropertyNotFoundException;
 import com.cumulus.repo.lab.xml.utils.caNotFoundException;
+import com.cumulus.repo.lab.xml.utils.templateVersionNotFoundException;
 
 
 import org.cumulus.certificate.model.PropertyType.PropertyPerformance;
@@ -78,7 +79,7 @@ public class CminstanceService {
     @Inject
    	private CaRepository caRepository;
 
-    private Cminstance parseXMLTemplate(String XML) throws JAXBException, PropertyNotFoundException, PropertyAttributeException, caNotFoundException{
+    private Cminstance parseXMLTemplate(String XML) throws JAXBException, PropertyNotFoundException, PropertyAttributeException, caNotFoundException, templateVersionNotFoundException{
 		JaxbUnmarshal jx = new JaxbUnmarshal(XML,
 				"org.cumulus.certificate.model");
 		Cminstance c = new Cminstance();
@@ -90,16 +91,18 @@ public class CminstanceService {
 			TestCertificationModel t = obj.getValue();
 			c.setXml(XML);
 			c.setModelid(t.getCertificationModelID().getValue());
-			/**
-			 * CAPIRE CHE FARE CON LA VERSIONE
-			 */
+			
 			if (t.getCertificationModelID().getVersion() != null) {
 				c.setVersion(t.getCertificationModelID()
 						.getVersion());
 			}
 			c.setTemplateid(t.getCertificationModelTemplateID().getValue());
 			BigDecimal tv= t.getCertificationModelTemplateID().getVersion();
-			c.setTemplateersion(tv.setScale(3));
+			if(tv!=null){
+				c.setTemplateersion(tv.setScale(3));
+			}else{
+				throw new templateVersionNotFoundException();
+			}
 			c.setCa(this.findCa(t.getCertificationModelTemplateID().getCA()));
 			
 			log.debug(t.getToC().getId());
@@ -226,6 +229,11 @@ private Ca findCa(String name) throws caNotFoundException{
 					.badRequest()
 					.header("Failure",
 							"Template Ca not found").build();
+		} catch (templateVersionNotFoundException e) {
+			return ResponseEntity
+					.badRequest()
+					.header("Failure",
+							"Template Version not found").build();
 		}
 		if (cm.getId() != null) {
 			return ResponseEntity
@@ -249,12 +257,67 @@ private Ca findCa(String name) throws caNotFoundException{
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional
-    public ResponseEntity<Void> update(@RequestBody Cminstance cminstance) throws URISyntaxException {
-        log.debug("REST request to update Cminstance : {}", cminstance);
-        if (cminstance.getId() == null) {
-            //return create(cminstance);
-        }
-        cminstanceRepository.save(cminstance);
+    public ResponseEntity<Void> update(@RequestBody String XML) throws URISyntaxException {
+    	log.debug("REST request to create Template by XML : {}", XML);
+		Cminstance cm = null;
+
+		try {
+			cm = this.parseXMLTemplate(XML);
+			User user = userService.getUserWithAuthorities();
+			
+			if (cm.getVersion() == null) {
+				Sort s = new Sort(Sort.Direction.DESC, "version");
+				List<Cminstance> l = this.cminstanceRepository.findByModelid(cm.getModelid(), s);
+				cm.setVersion(l.get(0).getVersion().add(new BigDecimal(0.1)));
+			}
+			cm.setMaster(true);
+			Sort s = new Sort(Sort.Direction.DESC, "version");
+			List<Cminstance> l = this.cminstanceRepository.findByModelid(cm.getModelid(), s);
+			if (l.isEmpty()) {
+				return ResponseEntity
+						.badRequest()
+						.header("Failure",
+								"A new template must already have an ID")
+						.build();
+			}
+			
+			if (user == null) {
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			} else {
+				cm.setUser(user);
+			}
+		} catch (JAXBException e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (PropertyNotFoundException e) {
+			return ResponseEntity
+					.badRequest()
+					.header("Failure",
+							"Property not found").build();
+		} catch (PropertyAttributeException e) {
+			return ResponseEntity
+					.badRequest()
+					.header("Failure",
+							"Property Attribute not found").build();
+		} catch (caNotFoundException e) {
+			return ResponseEntity
+					.badRequest()
+					.header("Failure",
+							"Template Ca not found").build();
+		} catch (templateVersionNotFoundException e) {
+			// TODO Auto-generated catch block
+			return ResponseEntity
+					.badRequest()
+					.header("Failure",
+							"Template Version not found").build();
+		}
+		if (cm.getId() != null) {
+			return ResponseEntity
+					.badRequest()
+					.header("Failure",
+							"NEW CM CAN'T HAVE ID").build();
+		}
+		this.cminstanceRepository.resetAllMaster(cm.getModelid());
+        cminstanceRepository.save(cm);
         return ResponseEntity.ok().build();
     }
 
