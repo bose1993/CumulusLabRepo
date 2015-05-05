@@ -359,8 +359,22 @@ private Ca findCa(String name) throws caNotFoundException{
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Transactional
     public void delete(@PathVariable Long id) {
         log.debug("REST request to delete Cminstance : {}", id);
-        cminstanceRepository.delete(id);
+        Cminstance cm = this.cminstanceRepository.findOne(id);
+        if(cm!=null){
+	        if(cm.getMaster()==true){
+	            cminstanceRepository.delete(id);
+	        	Sort s = new Sort(Sort.Direction.DESC, "version");
+				List<Cminstance> l = this.cminstanceRepository.findByModelid(cm.getModelid(), s);
+				Cminstance newMaster = l.get(0);
+				newMaster.setMaster(true);
+		        log.debug("NewMaster cminstance Id : {}", newMaster.getId());
+				this.cminstanceRepository.save(newMaster);
+	        }else{
+	        	cminstanceRepository.delete(id);
+	        }
+        }
     }
 }
