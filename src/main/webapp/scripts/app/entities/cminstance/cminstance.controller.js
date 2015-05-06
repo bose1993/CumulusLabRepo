@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('cumuluslabrepoApp')
-    .controller('CminstanceController', function ($scope, Cminstance, Ca, Toc, Property, User, ParseLinks) {
+    .controller('CminstanceController', function ($scope, Cminstance, Ca, Toc, Property, User, ParseLinks,Principal) {
         $scope.cminstances = [];
         $scope.cas = Ca.query();
         $scope.tocs = Toc.query();
         $scope.propertys = Property.query();
+        $scope.isInRole = Principal.isInRole;
         $scope.users = User.query();
         $scope.page = 1;
         $scope.loadAll = function() {

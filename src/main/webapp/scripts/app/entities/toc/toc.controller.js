@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('cumuluslabrepoApp')
-    .controller('TocController', function ($scope, Toc, Cminstance, ParseLinks) {
+    .controller('TocController', function ($scope, Toc, Cminstance, ParseLinks,Principal) {
         $scope.tocs = [];
         $scope.cminstances = Cminstance.query();
+        $scope.isInRole = Principal.isInRole;
         $scope.page = 1;
         $scope.loadAll = function() {
             Toc.query({page: $scope.page, per_page: 20}, function(result, headers) {

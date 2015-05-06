@@ -2,7 +2,7 @@
 
 angular.module('cumuluslabrepoApp')
     .factory('Propertyattribute', function ($resource) {
-        return $resource('api/propertyattributes/:id', {}, {
+        return $resource('crud/propertyattributes/:id', {}, {
             'query': { method: 'GET', isArray: true},
             'get': {
                 method: 'GET',

@@ -99,11 +99,13 @@
                         </button>
                         <button type="submit"
                                 ng-click="update(ca.id)"
+                                ng-show="isInRole('ROLE_ADMIN')"
                                 class="btn btn-primary">
                             <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
                         </button>
                         <button type="submit"
                                 ng-click="delete(ca.id)"
+                                ng-show="isInRole('ROLE_ADMIN')"
                                 class="btn btn-danger">
                             <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete"> Delete</span>
                         </button>

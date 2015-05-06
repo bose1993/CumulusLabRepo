@@ -23,7 +23,7 @@ import java.util.List;
  * REST controller for managing Toc.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/crud")
 public class TocResource {
 
     private final Logger log = LoggerFactory.getLogger(TocResource.class);

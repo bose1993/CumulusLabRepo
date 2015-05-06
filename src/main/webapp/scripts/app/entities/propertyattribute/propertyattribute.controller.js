@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('cumuluslabrepoApp')
-    .controller('PropertyattributeController', function ($scope, Propertyattribute, Property, ParseLinks) {
+    .controller('PropertyattributeController', function ($scope, Propertyattribute, Property, ParseLinks,Principal,Principal) {
         $scope.propertyattributes = [];
         $scope.propertys = Property.query();
+        $scope.isInRole = Principal.isInRole;
         $scope.page = 1;
         $scope.loadAll = function() {
             Propertyattribute.query({page: $scope.page, per_page: 20}, function(result, headers) {

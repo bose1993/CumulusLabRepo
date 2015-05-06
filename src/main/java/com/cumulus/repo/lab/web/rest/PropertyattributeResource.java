@@ -23,7 +23,7 @@ import java.util.List;
  * REST controller for managing Propertyattribute.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/crud")
 public class PropertyattributeResource {
 
     private final Logger log = LoggerFactory.getLogger(PropertyattributeResource.class);
