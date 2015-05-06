@@ -181,6 +181,13 @@ private Ca findCa(String name) throws caNotFoundException{
 }
 
 
+	/**
+	 * POST create a Cminstance from XML
+	 * @param XML
+	 * @return
+	 * @throws URISyntaxException
+	 */
+
 	@RequestMapping(value = "/cminstances", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
 	@Timed
@@ -322,6 +329,29 @@ private Ca findCa(String name) throws caNotFoundException{
     }
 
     /**
+     * PUT change cminstance Master
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/cminstances/changeMaster/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	@Timed
+	public ResponseEntity<Void> changeMaster(@PathVariable Long id) {
+		Cminstance c = this.cminstanceRepository.findOne(id);
+		if (c.getMaster()) {
+			return ResponseEntity.badRequest()
+					.header("Failure", "Selected template is alredy master")
+					.build();
+		} else {
+			this.cminstanceRepository.resetAllMaster(c.getModelid());
+			c.setMaster(true);
+			this.cminstanceRepository.save(c);
+		}
+		return null;
+
+	}
+
+    /**
      * GET  /cminstances -> get all the cminstances.
      */
     @RequestMapping(value = "/cminstances",
@@ -351,6 +381,71 @@ private Ca findCa(String name) throws caNotFoundException{
         }
         return new ResponseEntity<>(cminstance, HttpStatus.OK);
     }
+    
+    /**
+    * GET  /cminstances/:id/xml -> get the "id" cminstance xml.
+    */
+   @RequestMapping(value = "/cminstances/{id}/xml",
+           method = RequestMethod.GET,
+           produces = MediaType.APPLICATION_XML_VALUE)
+   @Timed
+   public ResponseEntity<String> getXml(@PathVariable Long id, HttpServletResponse response) {
+       log.debug("REST request to get Cminstance XML : {}", id);
+       Cminstance cminstance = cminstanceRepository.findOne(id);
+       if (cminstance == null) {
+           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }
+       return new ResponseEntity<>(cminstance.getXml(), HttpStatus.OK);
+   }
+   
+  /**
+   * GET  /cminstances/:id/xml -> get the "id" cminstance xml.
+   */
+  @RequestMapping(value = "/cminstances/getMaster/{ModelId}/xml",
+          method = RequestMethod.GET,
+          produces = MediaType.APPLICATION_XML_VALUE)
+  @Timed
+  public ResponseEntity<String> getMasterXml(@PathVariable String ModelId, HttpServletResponse response) {
+      log.debug("REST request to get Maser Cminstance XML : {}", ModelId);
+      Cminstance cminstance = cminstanceRepository.findOneByModelidAndMaster(ModelId, true);
+      if (cminstance == null) {
+          return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+      return new ResponseEntity<>(cminstance.getXml(), HttpStatus.OK);
+  }
+  
+  /**
+   * GET  /cminstances/getMaster/:ModelId/ -> get the "id" cminstance xml.
+   */
+  @RequestMapping(value = "/cminstances/getMaster/{ModelId}",
+          method = RequestMethod.GET,
+          produces = MediaType.APPLICATION_JSON_VALUE)
+  @Timed
+  public ResponseEntity<Cminstance> getMaster(@PathVariable String ModelId, HttpServletResponse response) {
+      log.debug("REST request to get Maser Cminstance XML : {}", ModelId);
+      Cminstance cminstance = cminstanceRepository.findOneByModelidAndMaster(ModelId, true);
+      if (cminstance == null) {
+          return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+      return new ResponseEntity<>(cminstance, HttpStatus.OK);
+  }
+   
+  /**
+   * GET  /cminstances/getModelId/:ModelId/ -> get the "ModelId" cminstance.
+   */
+  @RequestMapping(value = "/cminstances/getAllByModelId/{ModelId}",
+          method = RequestMethod.GET,
+          produces = MediaType.APPLICATION_JSON_VALUE)
+  @Timed
+  public ResponseEntity<List<Cminstance>> getModelId(@PathVariable String ModelId) {
+      log.debug("REST request to get Maser Cminstance XML : {}", ModelId);
+      List<Cminstance> l = this.cminstanceRepository.findByModelid(ModelId, new Sort(Sort.Direction.DESC, "version"));
+      if (l.isEmpty()) {
+          return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+      return new ResponseEntity<>(l, HttpStatus.OK);
+  }
+   
 
     /**
      * DELETE  /cminstances/:id -> delete the "id" cminstance.

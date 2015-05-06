@@ -21,6 +21,8 @@ public interface CminstanceRepository extends JpaRepository<Cminstance,Long> {
 	int resetAllMaster(String modelId);
 
 	List<Cminstance> findByModelid(String modelid, Sort s);
+	
+	Cminstance findOneByModelidAndMaster(String modelid,boolean master);
 
 	
 
