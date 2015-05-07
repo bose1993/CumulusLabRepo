@@ -13,6 +13,10 @@
                 "cminstance": "Cminstance",
                 "additionalEntity": "JHipster will add addtional entities"
             },
+            "service": {
+                "main": "Service",
+                "cminstance": "CM Instance"
+            },
             "account": {
                 "main": "Account",
                 "settings": "Settings",

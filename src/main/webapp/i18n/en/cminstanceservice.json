@@ -1,8 +1,8 @@
 {
     "cumuluslabrepoApp": {
-        "cminstance" : {
+        "cminstanceservice" : {
             "home": {
-                "title": "CM Instances",
+                "title": "CM Instance Insert via XML",
                 "createLabel": "Create a new Cminstance",
                 "createOrEditLabel": "Create or edit a Cminstance"
             },

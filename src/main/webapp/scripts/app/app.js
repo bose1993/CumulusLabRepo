@@ -4,7 +4,8 @@ angular.module('cumuluslabrepoApp', ['LocalStorageModule', 'tmh.dynamicLocale',
     'ngResource', 'ui.router', 'ngCookies', 'pascalprecht.translate', 'ngCacheBuster', 'infinite-scroll'])
 
     .run(function ($rootScope, $location, $window, $http, $state, $translate, Auth, Principal, Language, ENV, VERSION) {
-        $rootScope.ENV = ENV;
+        
+    	$rootScope.ENV = ENV;
         $rootScope.VERSION = VERSION;
         $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
             $rootScope.toState = toState;
@@ -19,7 +20,6 @@ angular.module('cumuluslabrepoApp', ['LocalStorageModule', 'tmh.dynamicLocale',
                 $translate.use(language);
             });
         });
-
         $rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {
             var titleKey = 'global.title';
 
@@ -55,6 +55,7 @@ angular.module('cumuluslabrepoApp', ['LocalStorageModule', 'tmh.dynamicLocale',
                 
                 if (token && token.expires_at && token.expires_at > new Date().getTime()) {
                     config.headers.Authorization = 'Bearer ' + token.access_token;
+                    console.log(token.access_token);
                 }
                 
                 return config;
@@ -65,7 +66,7 @@ angular.module('cumuluslabrepoApp', ['LocalStorageModule', 'tmh.dynamicLocale',
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider, $translateProvider, tmhDynamicLocaleProvider, httpRequestInterceptorCacheBusterProvider) {
 
         //Cache everything except rest api requests
-        httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*api.*/, /.*protected.*/], true);
+        httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*api.*/, /.*protected.*/,"/.*crud.*/"], true);
 
         $urlRouterProvider.otherwise('/');
         $stateProvider.state('site', {

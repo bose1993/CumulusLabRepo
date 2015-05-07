@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cumuluslabrepoApp')
-    .controller('PropertyattributeController', function ($scope, Propertyattribute, Property, ParseLinks,Principal,Principal) {
+    .controller('PropertyattributeController', function ($scope, Propertyattribute, Property, ParseLinks,Principal) {
         $scope.propertyattributes = [];
         $scope.propertys = Property.query();
         $scope.isInRole = Principal.isInRole;
