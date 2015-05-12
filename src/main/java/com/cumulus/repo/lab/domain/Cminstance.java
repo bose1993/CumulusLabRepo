@@ -40,6 +40,9 @@ public class Cminstance implements Serializable {
     @Column(name = "template_version", precision=10, scale=2)
     private BigDecimal templateversion;
 
+    @Column(name = "status")
+    private String status;
+
     @ManyToOne
     private Ca ca;
 
@@ -108,6 +111,14 @@ public class Cminstance implements Serializable {
         this.templateversion = templateversion;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public Ca getCa() {
         return ca;
     }
@@ -171,6 +182,7 @@ public class Cminstance implements Serializable {
                 ", version='" + version + "'" +
                 ", master='" + master + "'" +
                 ", templateversion='" + templateversion + "'" +
+                ", status='" + status + "'" +
                 '}';
     }
 }

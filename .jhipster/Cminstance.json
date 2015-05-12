@@ -84,6 +84,13 @@
             "fieldType": "BigDecimal",
             "fieldNameCapitalized": "Templateersion",
             "fieldNameUnderscored": "template_version"
+        },
+         {
+            "fieldId": 7,
+            "fieldName": "status",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Status",
+            "fieldNameUnderscored": "status"
         }
 
 

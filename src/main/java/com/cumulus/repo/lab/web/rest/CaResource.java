@@ -23,7 +23,7 @@ import java.util.List;
  * REST controller for managing Ca.
  */
 @RestController
-@RequestMapping("/crud")
+@RequestMapping("/api")
 public class CaResource {
 
     private final Logger log = LoggerFactory.getLogger(CaResource.class);

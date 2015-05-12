@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('cumuluslabrepoApp')
-    .controller('CaController', function ($scope, Ca, Cminstance, ParseLinks,Principal) {
+    .controller('CaController', function ($scope, Ca, Cminstance, ParseLinks) {
         $scope.cas = [];
         $scope.cminstances = Cminstance.query();
-        $scope.isInRole = Principal.isInRole;
         $scope.page = 1;
         $scope.loadAll = function() {
             Ca.query({page: $scope.page, per_page: 20}, function(result, headers) {
@@ -58,6 +57,6 @@ angular.module('cumuluslabrepoApp')
         };
 
         $scope.clear = function () {
-            $scope.ca = {name: null, uri: null, id: null};
+            $scope.ca = {name: null, uri: null, labuser: null, labsecret: null, id: null};
         };
     });

@@ -2,7 +2,7 @@
     "cumuluslabrepoApp": {
         "cminstance" : {
             "home": {
-                "title": "CM Instances",
+                "title": "Cminstances",
                 "createLabel": "Create a new Cminstance",
                 "createOrEditLabel": "Create or edit a Cminstance"
             },
@@ -18,6 +18,7 @@
             "version": "Version",
             "master": "Master",
             "templateersion": "Template Version",
+            "status": "Status",
             "ca": "ca",
             "toc": "toc",
             "property": "property",

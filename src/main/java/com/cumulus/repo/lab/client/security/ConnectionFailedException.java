@@ -1,6 +1,8 @@
 package com.cumulus.repo.lab.client.security;
 
 public class ConnectionFailedException extends Exception {
+	
+	private String response;
 
 	public ConnectionFailedException() {
 		// TODO Auto-generated constructor stub
@@ -26,5 +28,15 @@ public class ConnectionFailedException extends Exception {
 		super(message, cause, enableSuppression, writableStackTrace);
 		// TODO Auto-generated constructor stub
 	}
+
+	public String getResponse() {
+		return response;
+	}
+
+	public void setResponse(String response) {
+		this.response = response;
+	}
+	
+	
 
 }

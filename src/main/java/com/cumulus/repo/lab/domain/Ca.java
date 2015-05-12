@@ -27,6 +27,13 @@ public class Ca implements Serializable {
     @Column(name = "uri")
     private String uri;
 
+    @Column(name = "lab_user")
+    private String labuser;
+    
+    @JsonIgnore
+    @Column(name = "lab_secret")
+    private String labsecret;
+
     @OneToMany(mappedBy = "ca")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -54,6 +61,23 @@ public class Ca implements Serializable {
 
     public void setUri(String uri) {
         this.uri = uri;
+    }
+
+    public String getLabUser() {
+        return labuser;
+    }
+
+    public void setLabUser(String labuser) {
+        this.labuser = labuser;
+    }
+    
+    @JsonIgnore
+    public String getLabSecret() {
+        return labsecret;
+    }
+
+    public void setLabSecret(String labsecret) {
+        this.labsecret = labsecret;
     }
 
     public Set<Cminstance> getCminstances() {
@@ -91,6 +115,8 @@ public class Ca implements Serializable {
                 "id=" + id +
                 ", name='" + name + "'" +
                 ", uri='" + uri + "'" +
+                ", labuser='" + labuser + "'" +
+                ", labsecret='" + labsecret + "'" +
                 '}';
     }
 }

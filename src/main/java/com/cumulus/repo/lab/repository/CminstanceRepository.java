@@ -4,7 +4,6 @@ import com.cumulus.repo.lab.domain.Cminstance;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.*;
-import org.springframework.http.HttpHeaders;
 
 import java.util.List;
 
@@ -12,6 +11,7 @@ import java.util.List;
  * Spring Data JPA repository for the Cminstance entity.
  */
 public interface CminstanceRepository extends JpaRepository<Cminstance,Long> {
+
 
     @Query("select cminstance from Cminstance cminstance where cminstance.user.login = ?#{principal.username}")
     List<Cminstance> findAllForCurrentUser();
@@ -25,5 +25,6 @@ public interface CminstanceRepository extends JpaRepository<Cminstance,Long> {
 	Cminstance findOneByModelidAndMaster(String modelid,boolean master);
 
 	
+
 
 }

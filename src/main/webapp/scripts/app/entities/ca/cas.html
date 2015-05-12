@@ -35,6 +35,16 @@
                             <input type="text" class="form-control" name="uri"
                                    ng-model="ca.uri">
                         </div>
+                        <div class="form-group">
+                            <label translate="cumuluslabrepoApp.ca.labuser">LabUser</label>
+                            <input type="text" class="form-control" name="labuser"
+                                   ng-model="ca.labuser">
+                        </div>
+                        <div class="form-group">
+                            <label translate="cumuluslabrepoApp.ca.labsecret">LabSecret</label>
+                            <input type="text" class="form-control" name="labsecret"
+                                   ng-model="ca.labsecret">
+                        </div>
 
 
                     </div>
@@ -83,6 +93,8 @@
                     <th>ID</th>
                     <th translate="cumuluslabrepoApp.ca.name">Name</th>
                     <th translate="cumuluslabrepoApp.ca.uri">Uri</th>
+                    <th translate="cumuluslabrepoApp.ca.labuser">LabUser</th>
+                    <th translate="cumuluslabrepoApp.ca.labsecret">LabSecret</th>
                     <th></th>
                 </tr>
             </thead>
@@ -91,6 +103,8 @@
                     <td><a ui-sref="caDetail({id:ca.id})">{{ca.id}}</a></td>
                     <td>{{ca.name}}</td>
                     <td>{{ca.uri}}</td>
+                    <td>{{ca.labuser}}</td>
+                    <td>{{ca.labsecret}}</td>
                     <td>
                         <button type="submit"
                                 ui-sref="caDetail({id:ca.id})"
@@ -99,13 +113,11 @@
                         </button>
                         <button type="submit"
                                 ng-click="update(ca.id)"
-                                ng-show="isInRole('ROLE_ADMIN')"
                                 class="btn btn-primary">
                             <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
                         </button>
                         <button type="submit"
                                 ng-click="delete(ca.id)"
-                                ng-show="isInRole('ROLE_ADMIN')"
                                 class="btn btn-danger">
                             <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete"> Delete</span>
                         </button>

@@ -1,12 +1,9 @@
 package com.cumulus.repo.lab.web.rest;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
-
+import com.codahale.metrics.annotation.Timed;
+import com.cumulus.repo.lab.domain.Cminstance;
+import com.cumulus.repo.lab.repository.CminstanceRepository;
+import com.cumulus.repo.lab.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -14,26 +11,19 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.codahale.metrics.annotation.Timed;
-import com.cumulus.repo.lab.client.security.Client;
-import com.cumulus.repo.lab.client.security.ConnectionFailedException;
-import com.cumulus.repo.lab.client.security.Token;
-import com.cumulus.repo.lab.domain.Cminstance;
-import com.cumulus.repo.lab.repository.CminstanceRepository;
-import com.cumulus.repo.lab.web.rest.util.PaginationUtil;
+import javax.inject.Inject;
+import java.net.URI;
+import java.net.URISyntaxException;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * REST controller for managing Cminstance.
  */
 @RestController
-@RequestMapping("/crud")
+@RequestMapping("/api")
 public class CminstanceResource {
 
     private final Logger log = LoggerFactory.getLogger(CminstanceResource.class);
@@ -102,30 +92,6 @@ public class CminstanceResource {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(cminstance, HttpStatus.OK);
-    }
-    
-    /**
-     * GET  /cminstances/:id -> get the "id" cminstance.
-     */
-    @RequestMapping(value = "/test",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public ResponseEntity<Token> Test( HttpServletResponse response) {
-        log.debug("Login Test");
-        Client c;
-		try {
-			c = new Client("http://172.25.27.81:8080/oauth/token", "admin", "admin","cumulusapp","mySecretOAuthSecret");
-		} catch (ConnectionFailedException e) {
-			// TODO Auto-generated catch block
-			HttpHeaders responseHeaders = new HttpHeaders();
-			responseHeaders.set("Failure",e.getMessage());
-
-
-	        return new ResponseEntity<>(responseHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-        
-        return new ResponseEntity<Token>(c.getToken(), HttpStatus.OK);
     }
 
     /**

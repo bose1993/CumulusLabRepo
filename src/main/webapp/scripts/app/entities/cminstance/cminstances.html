@@ -53,7 +53,12 @@
                         <div class="form-group">
                             <label translate="cumuluslabrepoApp.cminstance.templateversion">Template Version</label>
                             <input type="text" class="form-control" name="templateversion"
-                                   ng-model="cminstance.templateersion">
+                                   ng-model="cminstance.templateversion">
+                        </div>
+                        <div class="form-group">
+                            <label translate="cumuluslabrepoApp.cminstance.status">Status</label>
+                            <input type="text" class="form-control" name="status"
+                                   ng-model="cminstance.status">
                         </div>
 
                         <div class="form-group">
@@ -123,10 +128,11 @@
                     <th>ID</th>
                     <th translate="cumuluslabrepoApp.cminstance.modelid">Modelid</th>
                     <th translate="cumuluslabrepoApp.cminstance.templateid">Templateid</th>
-                    <!-- <th translate="cumuluslabrepoApp.cminstance.xml">Xml</th>    -->
+                    <!--  <th translate="cumuluslabrepoApp.cminstance.xml">Xml</th>-->
                     <th translate="cumuluslabrepoApp.cminstance.version">Version</th>
                     <th translate="cumuluslabrepoApp.cminstance.master">Master</th>
-                    <th translate="cumuluslabrepoApp.cminstance.templateersion">Templateersion</th>
+                    <th translate="cumuluslabrepoApp.cminstance.templateersion">Template Version</th>
+                    <th translate="cumuluslabrepoApp.cminstance.status">Status</th>
                     <th translate="cumuluslabrepoApp.cminstance.ca">ca</th>
                     <th translate="cumuluslabrepoApp.cminstance.toc">toc</th>
                     <th translate="cumuluslabrepoApp.cminstance.property">property</th>
@@ -143,6 +149,7 @@
                     <td>{{cminstance.version}}</td>
                     <td>{{cminstance.master}}</td>
                     <td>{{cminstance.templateersion}}</td>
+                    <td>{{cminstance.status}}</td>
                     <td>{{cminstance.ca.name}}</td>
                     <td>{{cminstance.toc.concretetoc}}</td>
                     <td>{{cminstance.property.rules}}</td>

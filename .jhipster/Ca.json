@@ -24,7 +24,20 @@
             "fieldType": "String",
             "fieldNameCapitalized": "Uri",
             "fieldNameUnderscored": "uri"
+        },{ 
+            "fieldId": 3,
+            "fieldName": "labuser",
+            "fieldType": "String",
+            "fieldNameCapitalized": "LabUser",
+            "fieldNameUnderscored": "lab_user"
+        },{ 
+            "fieldId": 4,
+            "fieldName": "labsecret",
+            "fieldType": "String",
+            "fieldNameCapitalized": "LabSecret",
+            "fieldNameUnderscored": "lab_secret"
         }
+
     ],
     "fieldsContainOwnerManyToMany": false,
     "fieldsContainOneToMany": true,

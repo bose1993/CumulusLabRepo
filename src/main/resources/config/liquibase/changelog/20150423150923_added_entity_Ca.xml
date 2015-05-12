@@ -17,6 +17,8 @@
             </column>
             <column name="name" type="varchar(255)"/>
             <column name="uri" type="varchar(255)"/>
+            <column name="lab_user" type="varchar(255)"/>
+            <column name="lab_secret" type="varchar(255)"/>
         </createTable>
         
     </changeSet>

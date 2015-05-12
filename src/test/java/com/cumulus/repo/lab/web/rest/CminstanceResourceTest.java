@@ -20,8 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-
-import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -54,6 +52,8 @@ public class CminstanceResourceTest {
 
     private static final BigDecimal DEFAULT_TEMPLATE_VERSION = BigDecimal.ZERO;
     private static final BigDecimal UPDATED_TEMPLATE_VERSION = BigDecimal.ONE;
+    private static final String DEFAULT_STATUS = "SAMPLE_TEXT";
+    private static final String UPDATED_STATUS = "UPDATED_TEXT";
 
     @Inject
     private CminstanceRepository cminstanceRepository;
@@ -79,6 +79,7 @@ public class CminstanceResourceTest {
         cminstance.setVersion(DEFAULT_VERSION);
         cminstance.setMaster(DEFAULT_MASTER);
         cminstance.setTemplateersion(DEFAULT_TEMPLATE_VERSION);
+        cminstance.setStatus(DEFAULT_STATUS);
     }
 
     @Test
@@ -103,6 +104,7 @@ public class CminstanceResourceTest {
         assertThat(testCminstance.getVersion()).isEqualTo(DEFAULT_VERSION);
         assertThat(testCminstance.getMaster()).isEqualTo(DEFAULT_MASTER);
         assertThat(testCminstance.getTemplateersion()).isEqualTo(DEFAULT_TEMPLATE_VERSION);
+        assertThat(testCminstance.getStatus()).isEqualTo(DEFAULT_STATUS);
     }
 
     @Test
@@ -121,7 +123,8 @@ public class CminstanceResourceTest {
                 .andExpect(jsonPath("$.[0].xml").value(DEFAULT_XML.toString()))
                 .andExpect(jsonPath("$.[0].version").value(DEFAULT_VERSION.intValue()))
                 .andExpect(jsonPath("$.[0].master").value(DEFAULT_MASTER.booleanValue()))
-                .andExpect(jsonPath("$.[0].templateversion").value(DEFAULT_TEMPLATE_VERSION.intValue()));
+                .andExpect(jsonPath("$.[0].templateversion").value(DEFAULT_TEMPLATE_VERSION.intValue()))
+                .andExpect(jsonPath("$.[0].status").value(DEFAULT_STATUS.toString()));
     }
 
     @Test
@@ -140,7 +143,8 @@ public class CminstanceResourceTest {
             .andExpect(jsonPath("$.xml").value(DEFAULT_XML.toString()))
             .andExpect(jsonPath("$.version").value(DEFAULT_VERSION.intValue()))
             .andExpect(jsonPath("$.master").value(DEFAULT_MASTER.booleanValue()))
-            .andExpect(jsonPath("$.templateversion").value(DEFAULT_TEMPLATE_VERSION.intValue()));
+            .andExpect(jsonPath("$.templateversion").value(DEFAULT_TEMPLATE_VERSION.intValue()))
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()));
     }
 
     @Test
@@ -164,6 +168,7 @@ public class CminstanceResourceTest {
         cminstance.setVersion(UPDATED_VERSION);
         cminstance.setMaster(UPDATED_MASTER);
         cminstance.setTemplateersion(UPDATED_TEMPLATE_VERSION);
+        cminstance.setStatus(UPDATED_STATUS);
         restCminstanceMockMvc.perform(put("/api/cminstances")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(cminstance)))
@@ -179,6 +184,7 @@ public class CminstanceResourceTest {
         assertThat(testCminstance.getVersion()).isEqualTo(UPDATED_VERSION);
         assertThat(testCminstance.getMaster()).isEqualTo(UPDATED_MASTER);
         assertThat(testCminstance.getTemplateersion()).isEqualTo(UPDATED_TEMPLATE_VERSION);
+        assertThat(testCminstance.getStatus()).isEqualTo(UPDATED_STATUS);
     }
 
     @Test

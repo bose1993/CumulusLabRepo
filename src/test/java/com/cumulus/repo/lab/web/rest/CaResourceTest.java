@@ -41,6 +41,10 @@ public class CaResourceTest {
     private static final String UPDATED_NAME = "UPDATED_TEXT";
     private static final String DEFAULT_URI = "SAMPLE_TEXT";
     private static final String UPDATED_URI = "UPDATED_TEXT";
+    private static final String DEFAULT_LAB_USER = "SAMPLE_TEXT";
+    private static final String UPDATED_LAB_USER = "UPDATED_TEXT";
+    private static final String DEFAULT_LAB_SECRET = "SAMPLE_TEXT";
+    private static final String UPDATED_LAB_SECRET = "UPDATED_TEXT";
 
     @Inject
     private CaRepository caRepository;
@@ -62,6 +66,8 @@ public class CaResourceTest {
         ca = new Ca();
         ca.setName(DEFAULT_NAME);
         ca.setUri(DEFAULT_URI);
+        ca.setLabUser(DEFAULT_LAB_USER);
+        ca.setLabSecret(DEFAULT_LAB_SECRET);
     }
 
     @Test
@@ -82,6 +88,8 @@ public class CaResourceTest {
         Ca testCa = cas.iterator().next();
         assertThat(testCa.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testCa.getUri()).isEqualTo(DEFAULT_URI);
+        assertThat(testCa.getLabUser()).isEqualTo(DEFAULT_LAB_USER);
+        assertThat(testCa.getLabSecret()).isEqualTo(DEFAULT_LAB_SECRET);
     }
 
     @Test
@@ -96,7 +104,9 @@ public class CaResourceTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.[0].id").value(ca.getId().intValue()))
                 .andExpect(jsonPath("$.[0].name").value(DEFAULT_NAME.toString()))
-                .andExpect(jsonPath("$.[0].uri").value(DEFAULT_URI.toString()));
+                .andExpect(jsonPath("$.[0].uri").value(DEFAULT_URI.toString()))
+                .andExpect(jsonPath("$.[0].labuser").value(DEFAULT_LAB_USER.toString()))
+                .andExpect(jsonPath("$.[0].labsecret").value(DEFAULT_LAB_SECRET.toString()));
     }
 
     @Test
@@ -111,7 +121,9 @@ public class CaResourceTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(ca.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.uri").value(DEFAULT_URI.toString()));
+            .andExpect(jsonPath("$.uri").value(DEFAULT_URI.toString()))
+            .andExpect(jsonPath("$.labuser").value(DEFAULT_LAB_USER.toString()))
+            .andExpect(jsonPath("$.labsecret").value(DEFAULT_LAB_SECRET.toString()));
     }
 
     @Test
@@ -131,6 +143,8 @@ public class CaResourceTest {
         // Update the ca
         ca.setName(UPDATED_NAME);
         ca.setUri(UPDATED_URI);
+        ca.setLabUser(UPDATED_LAB_USER);
+        ca.setLabSecret(UPDATED_LAB_SECRET);
         restCaMockMvc.perform(put("/api/cas")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(ca)))
@@ -142,6 +156,8 @@ public class CaResourceTest {
         Ca testCa = cas.iterator().next();
         assertThat(testCa.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testCa.getUri()).isEqualTo(UPDATED_URI);
+        assertThat(testCa.getLabUser()).isEqualTo(UPDATED_LAB_USER);
+        assertThat(testCa.getLabSecret()).isEqualTo(UPDATED_LAB_SECRET);
     }
 
     @Test

@@ -80,7 +80,7 @@ class CminstanceGatlingTest extends Simulation {
             .exec(http("Create new cminstance")
             .put("/api/cminstances")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "modelid":"SAMPLE_TEXT", "templateid":"SAMPLE_TEXT", "xml":"SAMPLE_TEXT", "version":null, "master":null, "templateversion":null}""")).asJSON
+            .body(StringBody("""{"id":null, "modelid":"SAMPLE_TEXT", "templateid":"SAMPLE_TEXT", "xml":"SAMPLE_TEXT", "version":null, "master":null, "templateversion":null, "status":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_cminstance_url")))
             .pause(10)
