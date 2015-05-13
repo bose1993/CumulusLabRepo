@@ -1,10 +1,12 @@
 package com.cumulus.repo.lab.domain;
 
+import com.cumulus.repo.lab.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -38,6 +40,9 @@ public class Ca implements Serializable {
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Cminstance> cminstances = new HashSet<>();
+    
+	@ManyToOne
+	private User user;
 
     public Long getId() {
         return id;
@@ -108,6 +113,14 @@ public class Ca implements Serializable {
     public int hashCode() {
         return (int) (id ^ (id >>> 32));
     }
+    
+    public User getuser() {
+		return user;
+	}
+
+	public void setuser(User user) {
+		this.user = user;
+	}
 
     @Override
     public String toString() {

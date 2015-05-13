@@ -8,6 +8,8 @@ endpoints.jolokia.enabled: false
 # security configuration (this key should be unique for your application, and kept secret)
 jhipster.security.rememberme.key: 36a1aacbbd68794f0be0b0e48363ff7e52ff62a8
 
+ALRepo:
+    name: "UNIMIREPO"
 async:
     corePoolSize: 2
     maxPoolSize: 50

@@ -36,7 +36,7 @@
                                    ng-model="ca.uri">
                         </div>
                         <div class="form-group">
-                            <label translate="cumuluslabrepoApp.ca.labuser">LabUser</label>
+                            <label translate="cumuluslabrepoApp.ca.labUser">LabUser</label>
                             <input type="text" class="form-control" name="labuser"
                                    ng-model="ca.labuser">
                         </div>
@@ -94,7 +94,7 @@
                     <th translate="cumuluslabrepoApp.ca.name">Name</th>
                     <th translate="cumuluslabrepoApp.ca.uri">Uri</th>
                     <th translate="cumuluslabrepoApp.ca.labuser">LabUser</th>
-                    <th translate="cumuluslabrepoApp.ca.labsecret">LabSecret</th>
+                    <!--  <th translate="cumuluslabrepoApp.ca.labsecret">LabSecret</th>-->
                     <th></th>
                 </tr>
             </thead>
@@ -103,8 +103,8 @@
                     <td><a ui-sref="caDetail({id:ca.id})">{{ca.id}}</a></td>
                     <td>{{ca.name}}</td>
                     <td>{{ca.uri}}</td>
-                    <td>{{ca.labuser}}</td>
-                    <td>{{ca.labsecret}}</td>
+                    <td>{{ca.labUser}}</td>
+                    <!--  <td>{{ca.labsecret}}</td>-->
                     <td>
                         <button type="submit"
                                 ui-sref="caDetail({id:ca.id})"
