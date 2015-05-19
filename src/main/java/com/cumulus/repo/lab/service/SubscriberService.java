@@ -26,11 +26,15 @@ import com.cumulus.repo.lab.client.security.Client;
 import com.cumulus.repo.lab.client.security.ConnectionFailedException;
 import com.cumulus.repo.lab.domain.Authority;
 import com.cumulus.repo.lab.domain.Ca;
+import com.cumulus.repo.lab.domain.Cminstance;
 import com.cumulus.repo.lab.domain.User;
 import com.cumulus.repo.lab.repository.AuthorityRepository;
 import com.cumulus.repo.lab.repository.CaRepository;
+import com.cumulus.repo.lab.repository.CminstanceRepository;
 import com.cumulus.repo.lab.repository.UserRepository;
 import com.cumulus.repo.lab.service.util.RandomUtil;
+import com.cumulus.repo.lab.service.util.SendCmService;
+import com.cumulus.repo.lab.service.util.oAuthClientException;
 
 /**
  * REST controller for managing Cminstance.
@@ -58,6 +62,11 @@ public class SubscriberService {
 	@Inject
 	private PasswordEncoder passwordEncoder;
 
+	@Inject
+	private CminstanceRepository cminstanceRepository;
+
+	@Inject
+	private SendCmService csends;
     
   /**
    * GET  /cminstances/getModelId/:ModelId/ -> get the "ModelId" cminstance.
@@ -116,7 +125,31 @@ public class SubscriberService {
 	}
       
       return ResponseEntity.status(HttpStatus.OK)
-		.body(ret); 
+    			.body(ret); 
+  
+  }
+  
+  @RequestMapping(value = "/sendcm/{id}",
+          method = RequestMethod.GET)
+  @Timed
+  public ResponseEntity<String> SendService(@PathVariable Long id) {
+	
+	  String ret = "";
+	  
+      Cminstance cminstance = cminstanceRepository.findOne(id);
+      if(cminstance== null){
+    	  return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body("CM not found"); 
+      }
+	  try {
+		csends.SendCm(cminstance, cminstance.getCa().getName());
+	} catch (oAuthClientException e) {
+		 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(e.getMessage()); 
+	}
+	  return ResponseEntity.status(HttpStatus.OK)
+				.body(ret); 
+	  
   
   }
    

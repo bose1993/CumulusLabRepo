@@ -2,7 +2,7 @@
 
 angular.module('cumuluslabrepoApp')
     .factory('Ca', function ($resource) {
-        return $resource('api/cas/:id', {}, {
+        return $resource('crud/cas/:id', {}, {
             'query': { method: 'GET', isArray: true},
             'get': {
                 method: 'GET',

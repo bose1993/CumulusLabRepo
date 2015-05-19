@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cumuluslabrepoApp')
-    .factory('Cminstance', function ($resource) {
+    .factory('CminstanceService', function ($resource) {
         return $resource('service/cminstances/:id', {}, {
             'query': { method: 'GET', isArray: true},
             'get': {

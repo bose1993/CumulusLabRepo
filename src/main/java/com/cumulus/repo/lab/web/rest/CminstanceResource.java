@@ -23,7 +23,7 @@ import java.util.List;
  * REST controller for managing Cminstance.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/crud")
 public class CminstanceResource {
 
     private final Logger log = LoggerFactory.getLogger(CminstanceResource.class);
