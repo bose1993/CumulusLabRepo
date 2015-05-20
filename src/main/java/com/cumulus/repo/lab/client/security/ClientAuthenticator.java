@@ -38,7 +38,8 @@ public class ClientAuthenticator {
 	public String takeToken() throws ConnectionFailedException{
 		 URL url;
 		    HttpURLConnection connection = null;
-		    String urlParameters = "username="+this.username+"&password="+this.password+"&grant_type=password&scope=read write&client_id=cumulusapp&client_secret=mySecretOAuthSecret";
+		    String urlParameters = "username="+this.username+"&password="+this.password+"&grant_type=password&scope=read write&client_id="+this.client_id+"&client_secret="+this.client_secret;
+		    
 		    try {
 		      //Create connection
 		      url = new URL(targetURL);

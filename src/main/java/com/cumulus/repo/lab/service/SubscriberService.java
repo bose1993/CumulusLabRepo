@@ -2,6 +2,7 @@ package com.cumulus.repo.lab.service;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -67,6 +68,9 @@ public class SubscriberService {
 
 	@Inject
 	private SendCmService csends;
+
+	@Inject
+	private UserService userService;
     
   /**
    * GET  /cminstances/getModelId/:ModelId/ -> get the "ModelId" cminstance.
@@ -133,7 +137,7 @@ public class SubscriberService {
           method = RequestMethod.GET)
   @Timed
   public ResponseEntity<String> SendService(@PathVariable Long id) {
-	
+      log.debug("REST request to send cm : {}", id);
 	  String ret = "";
 	  
       Cminstance cminstance = cminstanceRepository.findOne(id);
@@ -147,6 +151,40 @@ public class SubscriberService {
 		 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(e.getMessage()); 
 	}
+	  return ResponseEntity.status(HttpStatus.OK)
+				.body(ret); 
+	  
+  
+  }
+  
+  @RequestMapping(value = "/approvecm/{id}",
+          method = RequestMethod.GET)
+  @Timed
+  public ResponseEntity<String> Approvecm(@PathVariable Long id) {
+      log.debug("REST request to approve cm : {}", id);
+
+	  String ret = "";
+	  
+      Cminstance cminstance = cminstanceRepository.findOne(id);
+      Ca CmCa =cminstance.getCa();
+      User user = userService.getUserWithAuthorities();
+      
+		if (user == null) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("No user error !!");
+		}
+		List<Ca> caUser = this.carepo.findCaByUser(user.getId());
+		if (caUser.isEmpty() || caUser.size() != 1) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("AL error !!");
+		}
+		Ca CaUserObj = caUser.get(0);
+		if(!(CaUserObj.equals(CmCa))){
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Security error !!");
+		}
+		cminstance.setStatus("approved");
+		this.cminstanceRepository.save(cminstance);
 	  return ResponseEntity.status(HttpStatus.OK)
 				.body(ret); 
 	  
