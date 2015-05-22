@@ -1,40 +1,27 @@
 'use strict';
 
 angular.module('cumuluslabrepoApp')
-    .controller('CminstanceControllerService', function ($scope, Cminstance, Ca, Toc, Property, User, ParseLinks,Principal) {
+    .controller('CminstanceControllerService', function ($scope, CminstanceService,$http, Ca, Toc, Property, User, ParseLinks,Principal) {
         $scope.cminstances = [];
-        $scope.cas = Ca.query();
-        $scope.tocs = Toc.query();
+        
         $scope.propertys = Property.query();
         $scope.isInRole = Principal.isInRole;
-        $scope.users = User.query();
-        $scope.page = 1;
-        $scope.loadAll = function() {
-            Cminstance.query({page: $scope.page, per_page: 20}, function(result, headers) {
-                $scope.links = ParseLinks.parse(headers('link'));
-                for (var i = 0; i < result.length; i++) {
-                    $scope.cminstances.push(result[i]);
-                }
-            });
-        };
-        $scope.reset = function() {
-            $scope.page = 1;
-            $scope.cminstances = [];
-            $scope.loadAll();
-        };
-        $scope.loadPage = function(page) {
-            $scope.page = page;
-            $scope.loadAll();
-        };
-        $scope.loadAll();
+        $scope.XML = "";
 
-        $scope.create = function () {
-            Cminstance.update($scope.cminstance,
-                function () {
-                    $scope.reset();
-                    $('#saveCminstanceModal').modal('hide');
-                    $scope.clear();
-                });
+        $scope.send = function () {
+        	$http.post('/service/cminstances/canonicalize',$scope.XML).
+        	  success(function(data, status, headers, config) {
+        	    console.log(data);
+        	    var sig = new KJUR.crypto.Signature({"alg": "SHA1withRSA", "prov": "cryptojs/jsrsa"});
+        	    var p = new RSAKey();
+        	    p.readPrivateKeyFromPEMString($scope.pem);
+        	    sig.initSign(p);
+        	    sig.updateString(data);
+        	    console.log(sig.sign());
+        	  }).
+        	  error(function(data, status, headers, config) {
+        	   console.log(status);
+        	  });
         };
 
 

@@ -19,12 +19,19 @@ import com.cumulus.repo.lab.xml.utils.PropertyAttributeException;
 import com.cumulus.repo.lab.xml.utils.PropertyNotFoundException;
 import com.cumulus.repo.lab.xml.utils.caNotFoundException;
 import com.cumulus.repo.lab.xml.utils.templateVersionNotFoundException;
+import com.sun.org.apache.xml.internal.security.c14n.CanonicalizationException;
+import com.sun.org.apache.xml.internal.security.c14n.Canonicalizer;
+import com.sun.org.apache.xml.internal.security.c14n.InvalidCanonicalizerException;
+import com.sun.xml.internal.ws.util.xml.XmlUtil;
 
 
 import org.cumulus.certificate.model.PropertyType.PropertyPerformance;
 import org.cumulus.certificate.model.PropertyType.PropertyPerformance.PropertyPerformanceRow;
 import org.cumulus.certificate.model.PropertyType.PropertyPerformance.PropertyPerformanceRow.PropertyPerformanceCell;
 import org.cumulus.certificate.model.test.TestCertificationModel;
+import org.dom4j.DocumentHelper;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -34,16 +41,34 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 
 import java.util.HashSet;
@@ -198,6 +223,7 @@ private Ca findCa(String name) throws caNotFoundException{
 
 		try {
 			cm = this.parseXMLTemplate(XML);
+			cm.setStatus("pending");
 			User user = userService.getUserWithAuthorities();
 			
 			if (cm.getVersion() == null) {
@@ -271,7 +297,8 @@ private Ca findCa(String name) throws caNotFoundException{
 		try {
 			cm = this.parseXMLTemplate(XML);
 			User user = userService.getUserWithAuthorities();
-			
+			cm.setStatus("pending");
+
 			if (cm.getVersion() == null) {
 				Sort s = new Sort(Sort.Direction.DESC, "version");
 				List<Cminstance> l = this.cminstanceRepository.findByModelid(cm.getModelid(), s);
@@ -472,4 +499,66 @@ private Ca findCa(String name) throws caNotFoundException{
 	        }
         }
     }
+    /**
+     * POST Canonicalize XML
+     */
+    @RequestMapping(value = "/cminstances/canonicalize", method = RequestMethod.POST, produces = MediaType.APPLICATION_XML_VALUE )
+    @Transactional
+    @Timed
+    public ResponseEntity<String> canonicalize(@RequestBody String XML)
+    		throws URISyntaxException {
+    	log.debug("REST request to canonicalize XML : {}", XML);
+    	XML = this.unPrettyPrint(XML);
+    	log.debug(XML);
+    	
+    	com.sun.org.apache.xml.internal.security.Init.init();
+    	byte canonXmlBytes[];
+		try {
+			Canonicalizer canon = Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N11_OMIT_COMMENTS);
+			canonXmlBytes = canon.canonicalize(XML.getBytes());
+			String canonXmlString = new String(canonXmlBytes);
+			return ResponseEntity.ok().body(canonXmlString);
+		} catch (CanonicalizationException e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body(e.getMessage());
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body(e.getMessage());
+		} catch (IOException e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body(e.getMessage());
+		} catch (SAXException e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body(e.getMessage());
+		} catch (InvalidCanonicalizerException e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+    	
+    	
+		
+
+    }
+    private String unPrettyPrint(final String xml){  
+
+        
+
+        final StringWriter sw;
+
+        try {
+            final OutputFormat format = OutputFormat.createCompactFormat();
+            final org.dom4j.Document document = DocumentHelper.parseText(xml);
+            sw = new StringWriter();
+            final XMLWriter writer = new XMLWriter(sw, format);
+            writer.write(document);
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Error un-pretty printing xml:\n" + xml, e);
+        }
+        return sw.toString();
+    }
+    
 }
+
+
+

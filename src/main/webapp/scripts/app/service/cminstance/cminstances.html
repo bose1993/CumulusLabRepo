@@ -1,5 +1,24 @@
-<div>
+<div >
 
     <h2 translate="cumuluslabrepoApp.cminstanceservice.home.title">Cminstance</h2>
-	
+			<div class="row">
+				<div class="col-md-12">
+					<textarea ng-model="XML" style="width:100%; min-height:600px">Insert your XML</textarea>	
+				</div>		
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<textarea ng-model="pem" style="width:100%; min-height:600px">Insert your Private Key Here</textarea>	
+				</div>		
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					<button type="submit"
+                                ng-click="send()"
+                                class="btn btn-info">
+                    <span class=""></span>&nbsp;<span translate="entity.action.send"> Send</span>
+            </button>	
+				</div>		
+			</div>
+			
 </div>
