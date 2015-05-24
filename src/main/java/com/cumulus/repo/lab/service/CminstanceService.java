@@ -1,29 +1,30 @@
 package com.cumulus.repo.lab.service;
 
-import com.codahale.metrics.annotation.Timed;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
-import com.cumulus.repo.lab.domain.Ca;
-import com.cumulus.repo.lab.domain.Property;
-import com.cumulus.repo.lab.domain.Propertyattribute;
-import com.cumulus.repo.lab.domain.Cminstance;
-import com.cumulus.repo.lab.domain.Toc;
-import com.cumulus.repo.lab.domain.User;
-import com.cumulus.repo.lab.repository.CaRepository;
-import com.cumulus.repo.lab.repository.CminstanceRepository;
-import com.cumulus.repo.lab.repository.PropertyRepository;
-import com.cumulus.repo.lab.repository.PropertyattributeRepository;
-import com.cumulus.repo.lab.repository.TocRepository;
-import com.cumulus.repo.lab.web.rest.util.PaginationUtil;
-import com.cumulus.repo.lab.xml.utils.JaxbUnmarshal;
-import com.cumulus.repo.lab.xml.utils.PropertyAttributeException;
-import com.cumulus.repo.lab.xml.utils.PropertyNotFoundException;
-import com.cumulus.repo.lab.xml.utils.caNotFoundException;
-import com.cumulus.repo.lab.xml.utils.templateVersionNotFoundException;
-import com.sun.org.apache.xml.internal.security.c14n.CanonicalizationException;
-import com.sun.org.apache.xml.internal.security.c14n.Canonicalizer;
-import com.sun.org.apache.xml.internal.security.c14n.InvalidCanonicalizerException;
-import com.sun.xml.internal.ws.util.xml.XmlUtil;
-
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.crypto.dsig.Reference;
+import javax.xml.crypto.dsig.XMLSignature;
+import javax.xml.crypto.dsig.XMLSignatureFactory;
+import javax.xml.crypto.dsig.dom.DOMValidateContext;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.cumulus.certificate.model.PropertyType.PropertyPerformance;
 import org.cumulus.certificate.model.PropertyType.PropertyPerformance.PropertyPerformanceRow;
@@ -41,41 +42,43 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import javax.inject.Inject;
+import sun.misc.BASE64Decoder;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.math.BigDecimal;
-import java.net.URI;
-import java.net.URISyntaxException;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
+import com.codahale.metrics.annotation.Timed;
+import com.cumulus.repo.lab.domain.Ca;
+import com.cumulus.repo.lab.domain.Cminstance;
+import com.cumulus.repo.lab.domain.Property;
+import com.cumulus.repo.lab.domain.Propertyattribute;
+import com.cumulus.repo.lab.domain.Toc;
+import com.cumulus.repo.lab.domain.User;
+import com.cumulus.repo.lab.repository.CaRepository;
+import com.cumulus.repo.lab.repository.CminstanceRepository;
+import com.cumulus.repo.lab.repository.PropertyRepository;
+import com.cumulus.repo.lab.repository.PropertyattributeRepository;
+import com.cumulus.repo.lab.repository.TocRepository;
+import com.cumulus.repo.lab.web.rest.util.PaginationUtil;
+import com.cumulus.repo.lab.xml.utils.JaxbUnmarshal;
+import com.cumulus.repo.lab.xml.utils.PropertyAttributeException;
+import com.cumulus.repo.lab.xml.utils.PropertyNotFoundException;
+import com.cumulus.repo.lab.xml.utils.caNotFoundException;
+import com.cumulus.repo.lab.xml.utils.templateVersionNotFoundException;
+import com.sun.org.apache.xml.internal.security.c14n.CanonicalizationException;
+import com.sun.org.apache.xml.internal.security.c14n.Canonicalizer;
+import com.sun.org.apache.xml.internal.security.c14n.InvalidCanonicalizerException;
 
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
 
 /**
  * REST controller for managing Cminstance.
@@ -196,6 +199,65 @@ return true;
 
 }
 
+public boolean signatureValidation(String XML,User u) throws Exception{
+
+	DocumentBuilderFactory dbf= DocumentBuilderFactory.newInstance();
+	dbf.setNamespaceAware(true);
+	 DocumentBuilder db=dbf.newDocumentBuilder();
+    InputSource is = new InputSource();
+    is.setCharacterStream(new StringReader(XML));
+
+    Document doc = db.parse(is);
+	// Find Signature element.
+	NodeList nl =
+	    doc.getElementsByTagName("Signature");
+	if (nl.getLength() == 0) {
+	    throw new Exception("Cannot find Signature element");
+	}
+	String pk = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqsuy6brI1R5Jz3vTF33n"+
+			"AvfzdKLSoict44VauSL53ynqASXn2Znxq65ZdeCxfuxF9lRqYnkgR2g7MqFM+7hZ"+
+			"GhMQW38AoNLf5EW8w32j/BRkfs2IowhoroF8GTkZTkxMoYyDg9kb4MvT+yDq/ufZ"+
+			"sGk18odoNKpOHiS7/uk+pmR06DyL0vpJ633j7vZ6to+YYLkIAS1mTwIQHRlO2r0C"+
+			"27drtS6INnQy70h9o9IblQfEj4Kvr+QDB6k99hUuWOlYjlZINqLh+tpoJtU2G/Co"+
+			"vaE6POmTnidHOPEsXSzVlDtVU8y9BxuwPMg0uLuAddlZUt7+EWi1BrEJgt3PLPv8"+
+			"4wIDAQAB";
+
+
+	
+	BASE64Decoder decoder = new BASE64Decoder();
+    byte[] b = decoder.decodeBuffer(pk); 
+	X509EncodedKeySpec spec =
+		      new X509EncodedKeySpec(b);
+		    KeyFactory kf = KeyFactory.getInstance("RSA");
+		    PublicKey p =  kf.generatePublic(spec);
+	// Create a DOMValidateContext and specify a KeySelector
+	// and document context.
+	DOMValidateContext valContext = new DOMValidateContext
+	   (p, nl.item(0));
+
+	// Unmarshal the XMLSignature.
+	XMLSignatureFactory factory = 
+			  XMLSignatureFactory.getInstance("DOM"); 
+
+	XMLSignature signature = factory.unmarshalXMLSignature(valContext);
+
+	// Validate the XMLSignature.
+	boolean coreValidity = signature.validate(valContext);
+	log.debug("Validità XML:{}",coreValidity);
+	if (coreValidity == false) {
+	    System.err.println("Signature failed core validation");
+	    boolean sv = signature.getSignatureValue().validate(valContext);
+	    System.out.println("signature validation status: " + sv);
+	}
+	Iterator<Reference>  i= signature.getSignedInfo().getReferences().iterator();
+    for (int j=0; i.hasNext(); j++) {
+        boolean refValid = (i.next()).validate(valContext);
+        System.out.println("ref["+j+"] validity status: " + refValid);
+    }
+	return false;
+	
+}
+
 private Ca findCa(String name) throws caNotFoundException{
 	Ca c = this.caRepository.findOneByName(name);
 	if(c!=null){
@@ -220,7 +282,16 @@ private Ca findCa(String name) throws caNotFoundException{
 			throws URISyntaxException {
 		log.debug("REST request to create Template by XML : {}", XML);
 		Cminstance cm = null;
-
+		try {
+			this.signatureValidation(XML, new User());
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return ResponseEntity
+					.badRequest()
+					.header("Failure",
+							e1.getMessage()).build();
+		}
 		try {
 			cm = this.parseXMLTemplate(XML);
 			cm.setStatus("pending");
@@ -508,13 +579,16 @@ private Ca findCa(String name) throws caNotFoundException{
     public ResponseEntity<String> canonicalize(@RequestBody String XML)
     		throws URISyntaxException {
     	log.debug("REST request to canonicalize XML : {}", XML);
-    	XML = this.unPrettyPrint(XML);
-    	log.debug(XML);
-    	
+		//return ResponseEntity.ok().body(XML);
+		
+    	//XML = this.unPrettyPrint(XML);
+    	//log.debug(XML);
+    	/*
     	com.sun.org.apache.xml.internal.security.Init.init();
     	byte canonXmlBytes[];
 		try {
-			Canonicalizer canon = Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N11_OMIT_COMMENTS);
+			
+			Canonicalizer canon = Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
 			canonXmlBytes = canon.canonicalize(XML.getBytes());
 			String canonXmlString = new String(canonXmlBytes);
 			return ResponseEntity.ok().body(canonXmlString);
@@ -534,11 +608,64 @@ private Ca findCa(String name) throws caNotFoundException{
 			e.printStackTrace();
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
-    	
+		*/
+    	byte[] result=null;
+    	  try {
+    	    com.sun.org.apache.xml.internal.security.Init.init();
+    	    Canonicalizer c14n=Canonicalizer.getInstance("http://www.w3.org/TR/2001/REC-xml-c14n-20010315");
+    	    result=c14n.canonicalize(XML.getBytes());
+    	  }
+    	 catch (  Exception e) {
+    	    throw new RuntimeException(e);
+    	  }
+    	  return ResponseEntity.ok().body(new String(result));    	
     	
 		
 
     }
+    
+    /**
+     * POST Canonicalize XML
+     */
+    @RequestMapping(value = "/cminstances/canonicalize/signatureinfo", method = RequestMethod.POST, produces = MediaType.APPLICATION_XML_VALUE )
+    @Transactional
+    @Timed
+    public ResponseEntity<String> canonicalizeSignatureInfo(@RequestBody String XML){
+    	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    	factory.setNamespaceAware(true);
+    	DocumentBuilder builder = null;
+		try {
+			builder = factory.newDocumentBuilder();
+		} catch (ParserConfigurationException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+    	Document document = null;
+		try {
+			document = builder.parse(new InputSource(new StringReader(XML)));
+		} catch (SAXException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	Element rootElement = document.getDocumentElement();
+    	NodeList list = rootElement.getElementsByTagName("SignedInfo");
+    	Node n = list.item(0);
+    	
+    	
+    	
+    	byte[] result=null;
+  	  try {
+  	    com.sun.org.apache.xml.internal.security.Init.init();
+  	    Canonicalizer c14n=Canonicalizer.getInstance("http://www.w3.org/TR/2001/REC-xml-c14n-20010315");
+  	    result=c14n.canonicalizeSubtree(n);
+  	  }
+  	 catch (  Exception e) {
+  	    throw new RuntimeException(e);
+  	  }
+  	  return ResponseEntity.ok().body(new String(result));
+    }
+    
+    
     private String unPrettyPrint(final String xml){  
 
         
